@@ -1,0 +1,31 @@
+{
+  "name": "api-service-warden",
+  "version": "0.1.0",
+  "description": "NodeJS-based micro-service chassis",
+  "main": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "tsc -d && node lib/index.js",
+    "build": "rm -rf built && tsc -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cto@troven.co",
+  "license": "ISC",
+  "dependencies": {
+    "api-service-main": "^0.32.8",
+    "@types/node": "^10.12.18",
+    "assert": "^1.4.1",
+    "config": "^1.28.1",
+    "esm": "^3.0.84",
+    "js-yaml": "^3.10.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "directories": {
+    "lib": "src"
+  }
+}

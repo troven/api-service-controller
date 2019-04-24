@@ -1,0 +1,28 @@
+<h2>{{openapi.info.title}}</h2>
+
+
+{{#each openapi.paths}}
+
+    {{#each .}}
+        <h3>{{@key}}: {{@../key}}</h3>
+        <h4><a href="{{@../key}}">{{summary}}</a></h4>
+        <p>{{description}}</p>
+        {{#each security}}
+            {{#each .}}
+                <p>{{@key}}: {{json .}}</p>
+            {{/each}}
+        {{/each}}
+        {{#unless security}}
+            [un-authenticated]
+        {{/unless}}
+        <ul>
+            {{#each responses}}
+                <li>
+                    <h5>[{{@key}}] {{description}}</h5>
+                    <code>{{json content}}</code>
+                </li>
+            {{/each}}
+
+        </ul>
+    {{/each}}
+{{/each}}

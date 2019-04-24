@@ -1,0 +1,4 @@
+apiVersion: v1
+name: api-service-warden
+version: 0.0.5
+description: node-chassis sidecar

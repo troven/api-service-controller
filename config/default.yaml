@@ -1,0 +1,126 @@
+name: api-service-warden
+port: 5008
+host: example.demo.troven.co
+
+auditor:
+  enabled: true
+  file:
+    filename: a6s-chassis.audit.log
+
+logging:
+  enabled: true
+  file:
+    filename: a6s-chassis.log
+
+features:
+
+  views:
+    enabled: true
+    mountPath: /views
+    static:
+    brand:
+      name: a6s-chassis
+      title: API chassis
+    apis:
+      health:
+        url: http://localhost:5005/heartbeat
+      openapi:
+        url: http://localhost:5005/apidocs
+  json:
+    enabled: true
+  openapi:
+    enabled: true
+
+x-openapi@: "./docs/swagger.yaml"
+
+openapi:
+  servers:
+    - url: https://example.demo.troven.co/v1
+  security:
+#    - oauth2_jwt: [ "example:api:generic" ]
+  info:
+    title: Example OpenAPI
+  paths:
+
+    /healthz:
+      get:
+        summary: Health check
+        chassis:
+          operationId: api.heartbeat
+        security:
+          - oauth2_jwt: [ "example:api:healthz" ]
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+    /swagger:
+      get:
+        summary: Open API docs
+        chassis:
+          operationId: api.apidocs
+        security:
+          - oauth2_jwt: [ "example:api:swagger" ]
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+    /proxy/healthz:
+      get:
+        summary: Health check via proxy
+        chassis:
+          operationId: api.proxy
+          target: http://localhost:5005/healthz
+        x-security:
+          - oauth2_jwt: [ "example:api:healthz" ]
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+  components:
+    securitySchemes:
+      oauth2_jwt:
+        type: http
+        scheme: bearer
+        description: JWT bearer key to authorize requests.
+        bearerFormat: JWT
+        name: authorization
+        in: header
+      # TODO: not yet supported
+      # api_key:
+      #   type: apiKey
+      #   description: API key to authorize requests.
+      #   name: api_key
+      #   in: query
+      # openId:
+      #   type: openIdConnect
+      #   openIdConnectUrl: /.well-known/openid-configuration
+      # oAuth:
+      #   type: oauth2
+      #   description: uses the OAuth2 clientCredentials flow to authorize requests.
+      #   flows:
+      #     x-authorizationCode:
+      #       authorizationUrl: https://login.troven.co/oauth2/authorize
+      #       scopes:
+      #         "example:api:healthz": "API health check"
+      #         "example:api:swagger": "Open API specification"
+      #     x-password:
+      #       authorizationUrl: https://login.troven.co/oauth2/authorize
+      #       scopes:
+      #         "example:api:healthz": "API health check"
+      #         "example:api:swagger": "Open API specification"
+      #     clientCredentials:
+      #       authorizationUrl: https://login.troven.co/oauth2/authorize
+      #       scopes:
+      #         "example:api:healthz": "API health check"
+      #         "example:api:swagger": "Open API specification"
+      #     x-implicit:
+      #       authorizationUrl: https://login.troven.co/oauth2/authorize
+      #       scopes:
+      #         "example:api:healthz": "API health check"
+      #         "example:api:swagger": "Open API specification"
