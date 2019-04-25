@@ -1,6 +1,6 @@
 {
   "name": "api-service-warden",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NodeJS-based micro-service chassis",
   "main": "src/index.ts",
   "types": "lib/index.d.ts",
