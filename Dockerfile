@@ -1,7 +1,7 @@
 FROM node:alpine
 
 LABEL name="api-service-warden"
-LABEL title="Docker: a6s Example APIs"
+LABEL title="Docker: Troven Example APIs"
 LABEL author="cto@troven.co"
 
 RUN apk update && apk upgrade && \
