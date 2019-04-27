@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-    "target": "es2017",
+    "target": "es6",
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "preserveSymlinks": false,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "esModuleInterop": false,
+    "preserveSymlinks": true,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
     "alwaysStrict": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
@@ -23,10 +23,7 @@
     "strictFunctionTypes": false,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
-    "checkJs": false,
-    "lib": ["es2017", "dom"],
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "checkJs": false
   },
   "include": [
     "./src/**/*"
