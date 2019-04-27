@@ -20,14 +20,14 @@
 
 // Load Chassis and the runtime configuration
 import { Chassis, default_features  } from "api-service-main";
-import { WardenPlugin } from "./warden/WardenPlugin";
+import { ControllerPlugin } from "./controller/ControllerPlugin";
 const config = require("config");
 
 // configure a new chassis
 let chassis = new Chassis(config, default_features);
 
 // register our custom plugin
-chassis.registerPlugin( new WardenPlugin() );
+chassis.registerPlugin( new ControllerPlugin() );
 
 // start the Chassis ...
 chassis.start();

@@ -2,15 +2,15 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: wardens.k8s.troven.io
+  name: apiservices.k8s.troven.io
 spec:
   group: k8s.troven.io
   version: v1alpha1
   names:
-    kind: Warden
-    listKind: WardenList
-    plural: wardens
-    singular: warden
+    kind: ApiService
+    listKind: ApiServicesList
+    plural: apiservices
+    singular: apiservice
   scope: Namespaced
   validation:
     openAPIV3Schema:

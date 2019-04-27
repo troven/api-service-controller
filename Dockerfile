@@ -1,6 +1,6 @@
 FROM node:alpine
 
-LABEL name="api-service-warden"
+LABEL name="api-service-controller"
 LABEL title="Docker: Troven Example APIs"
 LABEL author="cto@troven.co"
 
@@ -25,4 +25,4 @@ COPY views views
 # Launch NodeJS
 CMD ["npm", "start"]
 
-EXPOSE 6102
+EXPOSE 5008

@@ -1,6 +1,6 @@
 
 
-interface IWardenClaims {
+interface IControllerClaims {
     name: string;
     pattern: string;
 }

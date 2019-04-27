@@ -1,22 +1,74 @@
-name: api-service-warden
+name: api-service-controller
 port: 5008
-host: example.demo.troven.co
+host: controller.demo.troven.co
 
 auditor:
   enabled: true
   file:
-    filename: apis-chassis.audit.log
+    filename: apis-controller.audit.log
 
 logging:
   enabled: true
   file:
-    filename: apis-chassis.log
+    filename: apis-controller.log
 
 features:
-
   json:
     enabled: true
-
-  warden:
+  openapi:
     enabled: true
+  controller:
+    enabled: true
+    namespace: test
 
+openapi:
+  servers:
+    - url: https://example.demo.troven.co/v1
+  info:
+    title: Controller OpenAPI
+  paths:
+
+    /healthz:
+      get:
+        summary: Health check
+        chassis:
+          operationId: api.heartbeat
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+    /secure_healthz:
+      get:
+        summary: Health check
+        chassis:
+          operationId: api.heartbeat
+        security:
+          - oauth2_jwt: [ "example:api:healthz" ]
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+    /swagger:
+      get:
+        summary: Open API docs
+        chassis:
+          operationId: api.apidocs
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+  components:
+    securitySchemes:
+      oauth2_jwt:
+        type: http
+        scheme: bearer
+        description: JWT bearer key to authorize requests.
+        bearerFormat: JWT
+        name: authorization
+        in: header

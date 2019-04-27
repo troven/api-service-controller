@@ -2,7 +2,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: docker-nexus.demo.troven.co/api-service-warden
+  repository: docker-nexus.demo.troven.co/api-service-controller
   tag: 0.0.6
   pullPolicy: IfNotPresent
   pullSecrets:
@@ -17,7 +17,7 @@ service:
 ingress:
   enabled: true
   hosts:
-    - api-service-warden.demo.troven.co
+    - api-service-controller.demo.troven.co
   annotations:
     kubernetes.io/ingress.class: "traefik"
     # kubernetes.io/tls-acme: "true"

@@ -1,7 +1,7 @@
 {
-  "name": "api-service-warden",
-  "version": "0.1.9",
-  "description": "NodeJS-based micro-service chassis",
+  "name": "api-service-controller",
+  "version": "0.2.9",
+  "description": "OpenAPI-based micro-service controller",
   "main": "src/index.ts",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -14,12 +14,13 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.8.2",
     "@types/node": "^10.12.18",
-    "api-service-main": "^0.33.8",
+    "api-service-main": "^0.33.17",
     "assert": "^1.4.1",
     "config": "^1.28.1",
     "debug": "^4.1.1",
     "esm": "^3.0.84",
     "js-yaml": "^3.10.0",
+    "ms": "^2.1.1",
     "tsc": "^1.20150623.0"
   },
   "devDependencies": {
