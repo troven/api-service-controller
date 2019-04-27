@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-//    "allowJs": true,
     "target": "es2017",
     "module": "commonjs",
     "declaration": true,
@@ -9,7 +8,6 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-//    "inlineSourceMap": true,
     "preserveSymlinks": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
