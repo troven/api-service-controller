@@ -20,13 +20,13 @@
     "debug": "^4.1.1",
     "esm": "^3.0.84",
     "js-yaml": "^3.10.0",
-    "ms": "^2.1.1",
-    "tsc": "^1.20150623.0"
+    "ms": "^2.1.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "ts-node": "^7.0.1",
+    "tslint": "^5.5.0",
     "typescript": "^3.2.2"
   },
   "directories": {
