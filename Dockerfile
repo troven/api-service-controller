@@ -7,17 +7,15 @@ LABEL author="cto@troven.co"
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
+# Prepare NPM
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 RUN npm install
 
-# RUN npm install --global bower
-# COPY bower.json bower.json
-# RUN echo '{ "allow_root": true }' > /root/.bowerrc
-# RUN bower install --allow-root
+# Add our default config
+COPY config config
 
 # Add our source files
-COPY config config
 COPY lib lib
 
 # Launch NodeJS
