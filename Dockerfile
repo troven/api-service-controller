@@ -11,6 +11,7 @@ RUN apk update && apk upgrade && \
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 RUN npm install
+RUN npm run build
 
 # Add our default config
 COPY config config
