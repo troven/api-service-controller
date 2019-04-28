@@ -28,6 +28,7 @@ let chassis = new Chassis(config, default_features);
 
 // register our custom plugin
 chassis.registerPlugin( new ControllerPlugin() );
+chassis.registerPlugin( new ControllerPlugin() );
 
 // start the Chassis ...
 chassis.start();
