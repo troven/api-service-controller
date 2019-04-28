@@ -20,7 +20,7 @@ RUN npm run build
 COPY config config
 
 # Add our source files
-COPY lib lib
+COPY src src
 
 # Launch NodeJS
 CMD ["npm", "start"]
