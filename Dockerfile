@@ -14,7 +14,6 @@ COPY tsconfig.json tsconfig.json
 COPY VERSION VERSION
 
 RUN npm install
-RUN npm run build
 
 # Add our default config
 COPY config config
