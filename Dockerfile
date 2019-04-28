@@ -8,7 +8,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 COPY package.json package.json
-COPY .npmrc .
+COPY package-lock.json package-lock.json
 RUN npm install
 
 # RUN npm install --global bower
@@ -19,8 +19,6 @@ RUN npm install
 # Add our source files
 COPY config config
 COPY lib lib
-COPY public public
-COPY views views
 
 # Launch NodeJS
 CMD ["npm", "start"]
