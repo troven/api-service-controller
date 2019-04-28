@@ -14,7 +14,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.8.2",
     "@types/node": "^10.12.18",
-    "api-service-main": "^0.33.17",
+    "api-service-main": "^0.33.21",
     "api-service-mongo": "^0.7.21",
     "assert": "^1.4.1",
     "config": "^1.28.1",
