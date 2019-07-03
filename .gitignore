@@ -5,6 +5,8 @@ bower_components
 .idea
 .npmrc
 local
+keys
+secrets
 tmp
 *.log
 lib

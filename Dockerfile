@@ -1,7 +1,7 @@
 FROM node:alpine
 
 LABEL name="api-service-controller"
-LABEL title="Docker: Troven Example APIs"
+LABEL title="API Controller"
 LABEL author="cto@troven.co"
 
 RUN apk update && apk upgrade && \
@@ -9,7 +9,6 @@ RUN apk update && apk upgrade && \
 
 # Prepare NPM
 COPY package.json package.json
-COPY package-lock.json package-lock.json
 COPY tsconfig.json tsconfig.json
 COPY VERSION VERSION
 
