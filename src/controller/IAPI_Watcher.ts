@@ -8,7 +8,7 @@ import * as _ from "lodash";
 //     deleted = 'deleted',
 // }
 
-export class ControllerWatcher extends EventEmitter {
+export class IAPI_Watcher extends EventEmitter {
     watcher: k8s.Watch;
 
     constructor(kc: k8s.KubeConfig, url: string, options: any) {

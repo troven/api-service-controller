@@ -19,7 +19,7 @@
 
 import {IChassisPlugin, IChassisContext, Paths, IChassisPluginOptions, Security, Operation, openapi } from "api-service-core";
 import * as k8s from '@kubernetes/client-node';
-import { ControllerWatcher } from "./ControllerWatcher";
+import { IAPI_Watcher } from "./IAPI_Watcher";
 const assert = require("assert");
 
 /**
@@ -38,7 +38,7 @@ export class ControllerPlugin implements IChassisPlugin {
     type: string = "iapis"
 
     routes: any = {};
-    watcher: ControllerWatcher;
+    watcher: IAPI_Watcher;
 
     install(context: IChassisContext, _options: IChassisPluginOptions) {
         assert(context.middleware, "missing middleware");
@@ -59,7 +59,7 @@ export class ControllerPlugin implements IChassisPlugin {
         context.log({"code": "controller:watching", "message": "watching controllers", namespace: namespace, watch: watch_url});
 
         try {
-            this.watcher = new ControllerWatcher(kc, watch_url, options);
+            this.watcher = new IAPI_Watcher(kc, watch_url, options);
         } catch (e) {
             context.error({ code: "controller:watch:failed", namespace: namespace, watch: watch_url });
         }

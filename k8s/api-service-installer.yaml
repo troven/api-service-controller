@@ -1,0 +1,164 @@
+---
+# The service account, cluster roles, and cluster role binding are only needed for Kubernetes with role-based access control (RBAC).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    name: "api-service-controller"
+  name: "api-service-controller"
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    name: "api-service-controller"
+  name: "api-service-controller"
+rules:
+  - apiGroups: ['*']
+    resources: ['*']
+    verbs: ['*']
+  - nonResourceURLs: ['*']
+    verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    name: "api-service-controller"
+  name: "api-service-controller"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: "api-service-controller"
+subjects:
+  - kind: ServiceAccount
+    name: "api-service-controller"
+    # namespace: default
+---
+# The Deployment deploys the api-service.
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "api-service-controller"
+spec:
+  template:
+    metadata:
+      labels:
+        app: "api-service-controller"
+    spec:
+      serviceAccountName: "api-service-controller"
+      containers:
+      - image: "troven/api-service-controller:latest"
+        imagePullPolicy: Always
+        name: "api-service-controller"
+        volumeMounts:
+        - name: config-map
+          mountPath: /config
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 250m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: K8S_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: K8S_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: K8S_SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+      volumes:
+      - name: config-map
+        configMap:
+          name: "api-service-controller"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-service-controller
+data:
+  default.yaml: |-
+    name: api-service-controller
+    port: 5200
+
+    logging:
+      # Loggly:
+      #   token: "183f620d-db2c-4b1d-8398-8e07cb1a10fa"
+      #   subdomain: "troven"
+      #   tags: [ "api-service-controller", "troven", "example" ]
+      #   json: true
+      #   requires: "winston-loggly-bulk"
+      File:
+        filename: 'api-service-controller.log'
+      Console:
+      
+    features:
+      json:
+        enabled: true
+
+      prometheus:
+        enabled: true
+
+      api-service:
+        enabled: true
+        namespace: api-service-test
+        watcher: true
+
+      k8s:
+        enabled: true
+        namespace: api-service-test
+
+      openapi:
+        enabled: true
+        info:
+          title: "API Documentation"
+          version: 0.0.0
+        components:
+          securitySchemes:
+            oauth2_jwt:
+              type: http
+              scheme: bearer
+              description: JWT bearer key to authorize requests.
+              bearerFormat: JWT
+              name: authorization
+              in: header
+
+    openapi:
+      paths:
+        "/metrics":
+          get:
+            feature:
+              operationId: api.metrics
+            x-security:
+            - oauth2_jwt: [ "api:api-service" ]
+        "/healthz":
+          get:
+            feature:
+              operationId: api.heartbeat
+            x-security:
+            - oauth2_jwt: [ "api:api-service" ]
+        "/swagger":
+          get:
+            feature:
+              operationId: api.apidocs
+            x-security:
+            - oauth2_jwt: [ "api:api-service" ]

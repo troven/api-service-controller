@@ -4,12 +4,12 @@ host: controller.demo.troven.co
 
 auditor:
   enabled: true
-  file:
+  File:
     filename: apis-controller.audit.log
 
 logging:
   enabled: true
-  file:
+  File:
     filename: apis-controller.log
 
 features:
@@ -28,7 +28,7 @@ features:
 
 openapi:
   servers:
-    - url: https://example.demo.troven.co/v1
+    - url: https://api.example.k8s.net.au/
   info:
     title: Controller OpenAPI
   paths:
