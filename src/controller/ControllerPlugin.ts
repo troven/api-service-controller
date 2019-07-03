@@ -17,7 +17,7 @@
  * from Troven Pty Ltd.
  */
 
-import {IChassisPlugin, IChassisContext, Paths, IChassisPluginOptions, Security, Operation, openapi } from "api-service-main";
+import {IChassisPlugin, IChassisContext, Paths, IChassisPluginOptions, Security, Operation, openapi } from "api-service-core";
 import * as k8s from '@kubernetes/client-node';
 import { ControllerWatcher } from "./ControllerWatcher";
 const assert = require("assert");
@@ -31,11 +31,11 @@ const assert = require("assert");
  */
 export class ControllerPlugin implements IChassisPlugin {
 
-    name: string = "controller";
+    name: string = "iapi";
     title: string = "Controller Plugin";
-    group: string = "k8s.troven.io"
+    group: string = "k8s.troven.co"
     version: string = "v1alpha1"
-    type: string = "Controller"
+    type: string = "iapis"
 
     routes: any = {};
     watcher: ControllerWatcher;
@@ -51,8 +51,10 @@ export class ControllerPlugin implements IChassisPlugin {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
 
-        let namespace = options.namespace || "default";
-        let watch_url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+namespace+"/apiservices/";
+        let namespace = options.namespace || process.env.K8S_NAMESPACE;
+        if (!namespace) throw new Error("missing iapi.namespace or K8S_NAMESPACE");
+
+        let watch_url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+namespace+"/"+this.type;
 
         context.log({"code": "controller:watching", "message": "watching controllers", namespace: namespace, watch: watch_url});
 
@@ -66,7 +68,7 @@ export class ControllerPlugin implements IChassisPlugin {
             let options: any = iwr as any;
             let operation = new Operation(context, security, iwr.method, iwr.path, options );
             paths.addOperation( operation );
-            context.log({"code": "controller:added", "message": "added controller", method: operation.method, resource: operation.feature, operationId: operation.operationId });
+            context.log({"code": "controller:added", "message": "added controller", method: operation.operationId, resource: operation.feature, operationId: operation.operationId });
         });
     }
 

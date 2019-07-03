@@ -23,7 +23,6 @@ export class ControllerWatcher extends EventEmitter {
                     let methods = resources.paths[p];
                     for(let m in methods) {
                         let r: IControllerResource = methods[m];
-                        console.log("IControllerResource: %s : %s --> %j", p, m, r);
                         let operation = _.extend( { path: p, method: m}, r);
                         operation.feature.claims = _.extend({} , r.feature.claims);
                         this.handle(type, operation);

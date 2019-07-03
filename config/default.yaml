@@ -15,11 +15,16 @@ logging:
 features:
   json:
     enabled: true
+
+  prometheus:
+    enabled: true
+
   openapi:
     enabled: true
-  controller:
+
+  iapi:
     enabled: true
-    namespace: test
+    namespace: tenant-example
 
 openapi:
   servers:
@@ -42,7 +47,7 @@ openapi:
     /secure_healthz:
       get:
         summary: Health check
-        chassis:
+        feature:
           operationId: api.heartbeat
         security:
           - oauth2_jwt: [ "example:api:healthz" ]
@@ -55,7 +60,7 @@ openapi:
     /swagger:
       get:
         summary: Open API docs
-        chassis:
+        feature:
           operationId: api.apidocs
         responses:
          '200':

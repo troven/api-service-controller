@@ -1,7 +1,7 @@
 {
   "name": "api-service-controller",
-  "version": "0.3.22",
-  "description": "OpenAPI-based micro-service controller for k8s",
+  "version": "0.5.0",
+  "description": "OpenAPI middleware for K8s",
   "main": "src/index.ts",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -14,8 +14,9 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.8.2",
     "@types/node": "^10.12.18",
-    "api-service-main": "^0.33.21",
-    "api-service-mongo": "^0.7.21",
+    "api-service-core": "^0.37.9",
+    "api-service-common": "^0.7.8",
+    "api-service-mongo": "^0.10.8",
     "assert": "^1.4.1",
     "config": "^1.28.1",
     "debug": "^4.1.1",

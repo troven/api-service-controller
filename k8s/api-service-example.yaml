@@ -1,6 +1,6 @@
 ---
-apiVersion: k8s.troven.io/v1alpha1
-kind: APIService
+apiVersion: k8s.troven.co/v1alpha1
+kind: IAPI
 metadata:
   name: api-service-example
 spec:

@@ -19,7 +19,8 @@
  */
 
 // Load Chassis and the runtime configuration
-import { Chassis, default_features  } from "api-service-main";
+import { Chassis } from "api-service-core";
+import { default_features  } from "api-service-common";
 import { MongoStore  } from "api-service-mongo";
 import { ControllerPlugin } from "./controller/ControllerPlugin";
 const config = require("config");
