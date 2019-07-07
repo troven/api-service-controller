@@ -118,14 +118,9 @@ data:
       prometheus:
         enabled: true
 
-      api-service:
+      iapi:
         enabled: true
-        namespace: api-service-test
         watcher: true
-
-      k8s:
-        enabled: true
-        namespace: api-service-test
 
       openapi:
         enabled: true

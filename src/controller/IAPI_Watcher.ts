@@ -14,8 +14,9 @@ export class IAPI_Watcher extends EventEmitter {
     constructor(kc: k8s.KubeConfig, url: string, options: any) {
         super();
         this.watcher = new k8s.Watch(kc);
+        let watch_options = options.watcher || {};
 
-        this.watcher.watch(url, options, (_type, obj) => {
+        this.watcher.watch(url, watch_options, (_type, obj) => {
                 let type = _type.toLowerCase(); 
                 let resources: IControllerResources = obj.spec as IControllerResources;
 

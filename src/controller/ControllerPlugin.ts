@@ -32,7 +32,6 @@ const assert = require("assert");
 export class ControllerPlugin implements IChassisPlugin {
 
     name: string = "iapi";
-    title: string = "Controller Plugin";
     group: string = "k8s.troven.co"
     version: string = "v1alpha1"
     type: string = "iapis"
