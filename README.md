@@ -1,12 +1,11 @@
-Customizing the API Service Controller
+API Service Controller
 ----------------------
 
-The Controller loads it's config from ./config/default.yaml
+The `api-service-controller` extends the K8s API server to support near-native deployment of OpenAPIs. 
 
-The Controller when boots an API using a combination of a custom plugin, built-in features and a remote service via the proxy.
+The controller listens for K8s specs that resemble OpenAPI path definitions and manages each set of resources as an Express route.
 
-Create Controller Rules
--------------------
+As with all `api-service` components, the `api-service-controller` loads it's config from ./config/default.yaml
 
 
 
