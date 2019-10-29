@@ -36,8 +36,13 @@ openapi:
     /healthz:
       get:
         summary: Health check
-        chassis:
+        feature:
           operationId: api.heartbeat
+          after:
+            api.gregarious:
+              enabled: true
+              headers:
+                "X-CHASSIS-HEALTH-AFTER": true
         responses:
          '200':
             description: "200 response"
