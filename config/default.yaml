@@ -5,12 +5,12 @@ host: controller.demo.troven.co
 auditor:
   enabled: true
   File:
-    filename: apis-controller.audit.log
+    filename: api-controller.audit.log
 
 logging:
   enabled: true
   File:
-    filename: apis-controller.log
+    filename: api-controller.log
 
 features:
   json:

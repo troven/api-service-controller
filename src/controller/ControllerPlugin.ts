@@ -17,7 +17,7 @@
  * from Troven Pty Ltd.
  */
 
-import {IChassisPlugin, IChassisContext, Paths, IChassisPluginOptions, Security, Operation, openapi } from "api-service-core";
+import {IChassisPlugin, IChassisContext, Paths, IChassisPluginOptions, Security, Operation, OpenAPI } from "api-service-core";
 import * as k8s from '@kubernetes/client-node';
 import { IAPI_Watcher } from "./IAPI_Watcher";
 const assert = require("assert");
@@ -43,8 +43,8 @@ export class ControllerPlugin implements IChassisPlugin {
         assert(context.middleware, "missing middleware");
         let options: any = _options;
 
-        let openapi_spec: openapi = context.plugins.get("openapi") as openapi;
-        let security: Security = openapi_spec.spec.security || new Security(context);
+        let openapi_spec: OpenAPI = context.openapi;
+        let security: Security = openapi_spec.security || new Security(context);
         let paths: Paths = new Paths(context, security);
 
         const kc = new k8s.KubeConfig();
@@ -65,7 +65,7 @@ export class ControllerPlugin implements IChassisPlugin {
 
         this.watcher.on("controller:added", function(iwr: IControllerResource) {
             let options: any = iwr as any;
-            let operation = new Operation(context, security, iwr.method, iwr.path, options );
+            let operation = new Operation(context, iwr.feature.operationId, iwr.path, options );
             paths.addOperation( operation );
             context.log({"code": "controller:added", "message": "added controller", method: operation.operationId, resource: operation.feature, operationId: operation.operationId });
         });
