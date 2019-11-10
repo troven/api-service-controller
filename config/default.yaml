@@ -13,18 +13,39 @@ logging:
     filename: api-controller.log
 
 features:
-  json:
-    enabled: true
+  payload:
 
   prometheus:
     enabled: true
 
+  jwt:
+    secret: false
+    claims:
+      jti: "1234"
+
+  pipeline:
+    before:
+      api.gregarious:
+        headers:
+          X-BEFORE: true
+    after:
+
   openapi:
     enabled: true
+    before:
+      api.gregarious:
+        headers:
+          X-BEFORE: true
+    after:
+      api.gregarious:
+        headers:
+          X-AFTER: true
 
-  iapi:
+  controller:
     enabled: true
-    namespace: tenant-example
+    crd: false
+    folder: "./k8s/"
+
 
 openapi:
   servers:
@@ -32,30 +53,24 @@ openapi:
   info:
     title: Controller OpenAPI
   paths:
+    # /:
+    #   all:
+    #     feature:
+    #       before:
+    #         gregarious:
+    #           headers:
+    #             X-FEATURE: true
 
     /healthz:
       get:
         summary: Health check
         feature:
-          operationId: api.heartbeat
+          before:
+            # api.gregarious:
+            #   headers:
+            #     X-HEALTHZ-BEFORE: true
           after:
-            api.gregarious:
-              enabled: true
-              headers:
-                "X-CHASSIS-HEALTH-AFTER": true
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
-
-    /secure_healthz:
-      get:
-        summary: Health check
-        feature:
-          operationId: api.heartbeat
-        security:
-          - oauth2_jwt: [ "example:api:healthz" ]
+          featureId: api.heartbeat
         responses:
          '200':
             description: "200 response"
@@ -66,7 +81,7 @@ openapi:
       get:
         summary: Open API docs
         feature:
-          operationId: api.apidocs
+          featureId: api.apidocs
         responses:
          '200':
             description: "200 response"

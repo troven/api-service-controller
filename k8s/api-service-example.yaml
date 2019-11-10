@@ -1,45 +1,65 @@
 ---
-apiVersion: k8s.troven.co/v1alpha1
-kind: IAPI
+apiVersion: k8s.troven.io/v1alpha1
+kind: OpenAPI
 metadata:
   name: api-service-example
 spec:
+  selector:
+    controller: "api-service-controller"
+
   paths:
-    /proxy/healthz:
+    /example/swagger:
       get:
-        summary: Health check via proxy
+        summary: swagger via proxy
         feature:
-          operationId: api.proxy
-          target: http://localhost:5008/healthz
+          before:
+            api.gregarious:
+              headers:
+                "X-SWAGGER-BEFORE": true
+          after:
+          proxy:
+            reuseJWT: true
+            target: http://localhost:5008/swagger
         responses:
          '200':
             description: "200 response"
             content:
               application/json: {}
-
-    /proxy/secure_healthz:
-      get:
-        summary: Health check via proxy
-        feature:
-          operationId: api.proxy
-          target: http://localhost:5008/healthz
         security:
-          - oauth2_jwt: [ "controller:api:healthz" ]
+          - oauth2_jwt: [ "controller:api:swagger" ]
+
+    /example/healthz:
+      get:
+        summary: Health check via proxy
+        feature:
+          proxy:
+            target: http://localhost:5010/healthz
         responses:
          '200':
             description: "200 response"
             content:
               application/json: {}
 
-    /proxy/healthz_secure:
+    /example/echo:
       get:
-        summary: Health check via proxy
+        summary: Proxy to echo
         feature:
-          operationId: api.proxy
-          target: http://localhost:5008/secure_healthz
+          featureId: api.proxy
+          jwt_authorize:
+            claims:
+              aud: "1234"
+          proxy:
+            reuseJWT: false
+            toProxy: true
+            prependPath: true
+            ignorePath: true
+            secure: false
+            target: http://localhost:5010/echo/
         responses:
          '200':
             description: "200 response"
             content:
               application/json: {}
+        # security:
+        #   - oauth2_jwt: [ "controller:api:swagger" ]
 

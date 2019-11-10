@@ -22,7 +22,7 @@
 import { Chassis } from "api-service-core";
 import { default_features  } from "api-service-common";
 import { MongoStore  } from "api-service-mongo";
-import { ControllerPlugin } from "./controller/ControllerPlugin";
+import { ControllerPlugin } from "./plugin/Controller";
 const config = require("config");
 
 // configure a new chassis

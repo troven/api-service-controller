@@ -8,6 +8,7 @@ interface IControllerResource {
 }
 
 interface IControllerResources {
+    selector: any;
     paths: {IControllerResource};
 }
 
