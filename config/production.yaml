@@ -14,7 +14,6 @@ logging:
     enabled: true
 
 features:
-  logging:
 
   payload:
 

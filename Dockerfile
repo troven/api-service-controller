@@ -21,8 +21,9 @@ COPY config config
 
 # Add our source files
 COPY src src
+RUN tsc
 
 # Launch NodeJS
-CMD ["npm", "start"]
+CMD ["npm", "boot"]
 
 EXPOSE 5008

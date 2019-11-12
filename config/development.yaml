@@ -10,6 +10,8 @@ logging:
   enabled: true
   File:
     filename: api-controller.log
+  Console:
+    enabled: true
 
 features:
   payload:
