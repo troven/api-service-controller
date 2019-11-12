@@ -18,7 +18,7 @@
  */
 
 import {IChassisPlugin, IChassisContext, IChassisPluginOptions, Operation, OpenAPI } from "api-service-core";
-import { IControllerResource } from "../interfaces/IControllerResources"
+import { IControllerOperation } from "../interfaces/IControllerResources"
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
@@ -71,9 +71,9 @@ export class ControllerPlugin implements IChassisPlugin {
 
         let openapi: OpenAPI = this.plugin.openapi;
 
-        this.watcher.on("added", function(iwr: IControllerResource) {
+        context.bus.on("k8s:added", function(iwr: IControllerOperation) {
             let options: any = iwr as any;
-            let operation = new Operation(context, iwr.method, iwr.path, options );
+            let operation = new Operation(context, iwr.actionId, iwr.resource, options );
             openapi.paths.add(operation);
             context.log({"code": "api:k8s:endpoint:added", "message": "k8s added", method: operation.actionId, resource: operation.resource, operationId: operation.operationId });
         });

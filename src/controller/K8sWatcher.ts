@@ -1,9 +1,8 @@
 import * as k8s from '@kubernetes/client-node';
-import { EventEmitter } from 'events';
 import * as _ from "lodash";
 import * as RR from "recursive-readdir";
 import { Vars, IChassisContext } from "api-service-core";
-import { IControllerResources, IControllerResource, IControllerOpenAPI } from '../interfaces';
+import { IControllerResources, IControllerResource as IControllerOperation, IControllerOpenAPI } from '../interfaces';
 
 // enum WatchActions {
 //     added = 'added',
@@ -11,19 +10,16 @@ import { IControllerResources, IControllerResource, IControllerOpenAPI } from '.
 //     deleted = 'deleted',
 // }
 
-export class K8sWatcher extends EventEmitter {
+export class K8sWatcher  {
     k8s_watcher: k8s.Watch;
 
     // CustomResourceDefinition GVK spec
-    group: string = "k8s.a6s.dev"
-    version: string = "v1"
-    type: string = "openapis"
-    kind: string = "OpenAPI"
+    group: string = "k8s.a6s.dev";
+    version: string = "v1";
+    type: string = "openapis";
+    kind: string = "OpenAPI";
 
     constructor(protected context: IChassisContext, kc: k8s.KubeConfig, protected options: any) {
-        super();
-
-
         if (options.namespace) {
             let url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+options.namespace+"/"+this.type;
             this.watchK8s(kc, url, options.k8s || {} );
@@ -31,7 +27,6 @@ export class K8sWatcher extends EventEmitter {
         if (options.folder) {
             this.watchFolder(options. folder);
         }
-
     }
 
     /**
@@ -45,10 +40,10 @@ export class K8sWatcher extends EventEmitter {
         this.k8s_watcher = new k8s.Watch(kc);
         this.k8s_watcher.watch(url, options, (_action, obj) => {
             let action = _action.toLowerCase(); 
-            let spec: IControllerOpenAPI = obj.spec as IControllerOpenAPI;
+            let spec: IControllerOpenAPI = obj as IControllerOpenAPI;
             this.handleOpenAPISpec(action, spec);
         }, err => {
-            this.context.error({ "code": "k8s:watch:url:error", message: err.message });
+            this.context.error({ "code": "k8s:watch:url:error", message: err?err.message:"empty error" });
         });
     }
 
@@ -110,11 +105,9 @@ export class K8sWatcher extends EventEmitter {
         for(let p in resources.paths) {
             let methods = resources.paths[p];
             for(let m in methods) {
-                let r: IControllerResource = methods[m];
-                let operation = _.extend( { path: p, method: m}, r);
-                operation.feature.claims = _.extend({} , r.feature.claims);
+                let operation = _.extend( { resource: p, actionId: m}, methods[m]) as IControllerOperation;
                 this.context.log({ "code": "k8s:endpoint", action: action, operation: operation });
-                this.emit(action, operation);
+                this.context.bus.emit("k8s:"+action, operation);
             }
         }
     }
