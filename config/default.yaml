@@ -50,9 +50,8 @@ openapi:
       get:
         summary: Health check
         feature:
-          before:
-          featureId: api.heartbeat
-          after:
+          heartbeat:
+            enabled: true
         responses:
          '200':
             description: "200 response"
