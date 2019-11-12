@@ -24,7 +24,6 @@ import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
 import * as _ from "lodash";
 import OpenAPIPlugin from "api-service-core/lib/plugins/openapi";
-import * as assert from "assert";
 
 /**
  * ControllerPlugin
@@ -71,7 +70,6 @@ export class ControllerPlugin implements IChassisPlugin {
         }
 
         let openapi: OpenAPI = this.plugin.openapi;
-        assert(openapi, "missing openapi spec");
 
         this.watcher.on("added", function(iwr: IControllerResource) {
             let options: any = iwr as any;

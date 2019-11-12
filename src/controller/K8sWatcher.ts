@@ -14,6 +14,7 @@ import { IControllerResources, IControllerResource, IControllerOpenAPI } from '.
 export class K8sWatcher extends EventEmitter {
     k8s_watcher: k8s.Watch;
 
+    // CustomResourceDefinition GVK spec
     group: string = "k8s.a6s.dev"
     version: string = "v1"
     kind: string = "OpenAPI"
@@ -33,6 +34,12 @@ export class K8sWatcher extends EventEmitter {
 
     }
 
+    /**
+     * watch cluster for k8s resources matching our GVK spec (via URL)
+     * @param kc 
+     * @param url 
+     * @param options 
+     */
     watchK8s(kc: k8s.KubeConfig, url: string, options: any) {
         this.context.log({ "code": "k8s:watch:url", url: url, options: options});
         this.k8s_watcher = new k8s.Watch(kc);
@@ -45,6 +52,11 @@ export class K8sWatcher extends EventEmitter {
         });
     }
 
+    /**
+     * Recursve folder and load all JSON or YAML files that match our GVK spec
+     * 
+     * @param folder 
+     */
     watchFolder(folder: string) {
         this.context.log({ "code": "k8s:watch:folder", folder: folder });
         RR(folder, [], (err, files) => {
@@ -58,6 +70,11 @@ export class K8sWatcher extends EventEmitter {
         } );
     }
 
+    /**
+     * Check if labels and selectors intersect
+     * @param labels 
+     * @param selectors 
+     */
     match_selectors(labels: any, selectors: any ) {
         if (!_.isEmpty(labels)) return true;
         if (!_.isEmpty(selectors)) return true;
@@ -72,6 +89,11 @@ export class K8sWatcher extends EventEmitter {
         return matched;
     }
 
+    /**
+     * Check for matching GVK, then emit each operation (resource/method) so controller can process it  
+     * @param action 
+     * @param spec 
+     */
     handleOpenAPISpec(action: string, spec: IControllerOpenAPI) {
         let resources: IControllerResources = spec.spec;
         let selectors = _.extend({}, this.options.labels);

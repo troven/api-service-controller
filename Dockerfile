@@ -1,30 +1,25 @@
-FROM node:alpine
+#FROM node:alpine
+FROM docker.perci-io.net/api-service-common
 
 LABEL name="api-service-controller"
 LABEL title="API Controller"
 LABEL author="cto@troven.co"
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-
-WORKDIR /opt/a6s
-
 # Prepare NPM
+
 COPY package.json package.json
-COPY tsconfig.json tsconfig.json
 COPY VERSION VERSION
-
 RUN npm install
-RUN npm install typescript -g
 
-# Add our default config
-COPY config config
-
-# Add our source files
+# Compile our source
+COPY tsconfig.json tsconfig.json
 COPY src src
 RUN tsc
 
-# Launch NodeJS
+# Copy default runtime configs
+COPY config config
+
+# Run node without compiling
 CMD ["npm", "run", "boot"]
 
 EXPOSE 5008
