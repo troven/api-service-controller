@@ -39,35 +39,38 @@ export class ControllerPlugin implements IChassisPlugin {
     // routes: any = {};
     watcher: K8sWatcher;
     kc: k8s.KubeConfig;
+    plugin: OpenAPIPlugin;
 
     install(context: IChassisContext, _options: IChassisPluginOptions) {
-        let openapi: OpenAPIPlugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
-        assert(openapi, "openapi.plugin not loaded");
 
         let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||false }, _options);
 
-        // set watcher URL if a namespace is found
         this.kc = new k8s.KubeConfig();
         this.kc.loadFromDefault();
 
         options.crd && this.createCRD(this.kc, CRD);
 
-        this.watch(context, options);
+        context.bus.on("api:start", ()=> {
+            this.plugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
+            if (this.plugin) {
+                this.watch(context, options);
+            } else {
+                context.warn({ code: "api:k8s:watch:openapi:missing", options: options });
+            }
+        });
     }
 
     watch(context: IChassisContext, options: any) {
 
-        context.log({"code": "api:k8s:watching", "message": "watching controllers", namespace: options.namespace});
+        context.log({"code": "api:k8s:watching", "message": "watching controllers", options: options});
 
         try {
             this.watcher = new K8sWatcher(context, this.kc, options);
         } catch (e) {
-            context.error({ code: "api:k8s:watch:failed", namespace: options.namespace });
+            context.error({ code: "api:k8s:watch:failed", options: options });
         }
 
-        let plugin: OpenAPIPlugin = context.plugins.get("openapi") as OpenAPIPlugin;
-        assert(plugin, "openapi plugin is not configured");
-        let openapi: OpenAPI = plugin.spec;
+        let openapi: OpenAPI = this.plugin.openapi;
         assert(openapi, "missing openapi spec");
 
         this.watcher.on("added", function(iwr: IControllerResource) {

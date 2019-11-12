@@ -17,7 +17,7 @@
     "@types/node": "^10.12.18",
     "ajv": "^6.10.2",
     "api-service-common": "^0.10.3",
-    "api-service-core": "^0.51.4",
+    "api-service-core": "^0.51.6",
     "api-service-mongo": "^0.14.6",
     "assert": "^1.4.1",
     "config": "^1.28.1",

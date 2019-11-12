@@ -15,6 +15,7 @@ COPY tsconfig.json tsconfig.json
 COPY VERSION VERSION
 
 RUN npm install
+RUN npm install typescript -g
 
 # Add our default config
 COPY config config
@@ -24,6 +25,6 @@ COPY src src
 RUN tsc
 
 # Launch NodeJS
-CMD ["npm", "boot"]
+CMD ["npm", "run", "boot"]
 
 EXPOSE 5008
