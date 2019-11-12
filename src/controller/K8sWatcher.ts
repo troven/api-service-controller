@@ -17,15 +17,15 @@ export class K8sWatcher extends EventEmitter {
     // CustomResourceDefinition GVK spec
     group: string = "k8s.a6s.dev"
     version: string = "v1"
+    type: string = "openapis"
     kind: string = "OpenAPI"
-
 
     constructor(protected context: IChassisContext, kc: k8s.KubeConfig, protected options: any) {
         super();
 
 
         if (options.namespace) {
-            let url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+options.namespace+"/"+this.kind;
+            let url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+options.namespace+"/"+this.type;
             this.watchK8s(kc, url, options.k8s || {} );
         }
         if (options.folder) {
