@@ -43,5 +43,7 @@ features:
   controller:
     enabled: true
     crd: false
+    labels:
+      controller: "api-service-controller"
     folder: "./k8s/"
 

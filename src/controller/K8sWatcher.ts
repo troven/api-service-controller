@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import * as _ from "lodash";
 import * as RR from "recursive-readdir";
 import { Vars, IChassisContext } from "api-service-core";
+import { IControllerResources, IControllerResource, IControllerOpenAPI } from '../interfaces';
 
 // enum WatchActions {
 //     added = 'added',
@@ -13,10 +14,18 @@ import { Vars, IChassisContext } from "api-service-core";
 export class K8sWatcher extends EventEmitter {
     k8s_watcher: k8s.Watch;
 
-    constructor(protected context: IChassisContext,kc: k8s.KubeConfig, options: any) {
+    group: string = "k8s.a6s.dev"
+    version: string = "v1"
+    kind: string = "OpenAPI"
+
+
+    constructor(protected context: IChassisContext, kc: k8s.KubeConfig, protected options: any) {
         super();
-        if (options.k8s && options.url) {
-            this.watchK8s(kc, options.url, options.k8s);
+
+
+        if (options.namespace) {
+            let url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+options.namespace+"/"+this.kind;
+            this.watchK8s(kc, url, options.k8s || {} );
         }
         if (options.folder) {
             this.watchFolder(options. folder);
@@ -29,8 +38,8 @@ export class K8sWatcher extends EventEmitter {
         this.k8s_watcher = new k8s.Watch(kc);
         this.k8s_watcher.watch(url, options, (_action, obj) => {
             let action = _action.toLowerCase(); 
-            let resources: IControllerResources = obj.spec as IControllerResources;
-            this.handleEndpoint(action, resources);
+            let spec: IControllerOpenAPI = obj.spec as IControllerOpenAPI;
+            this.handleOpenAPISpec(action, spec);
         }, err => {
             this.context.error({ "code": "k8s:watch:url:error", message: err.message });
         });
@@ -43,28 +52,36 @@ export class K8sWatcher extends EventEmitter {
                 _.each(files, (file) => {
                     let yaml = Vars.load(file);
                     this.context.log({ "code": "k8s:watch:file", file: file });
-                    this.handleEndpoint("added", yaml.spec as IControllerResources);
+                    this.handleOpenAPISpec("added", yaml as IControllerOpenAPI);
                 });
             }
         } );
     }
 
-    match_selectors(selectors: any, matches: any ) {
-        if (!selectors) return true;
+    match_selectors(labels: any, selectors: any ) {
+        if (!_.isEmpty(labels)) return true;
+        if (!_.isEmpty(selectors)) return true;
+
         let matched = true;
-        for (const key in matches) {
-            if (matches.hasOwnProperty(key)) {
-                matched = matched && selectors[key] == matches[key];
+
+        for (const key in selectors) {
+            if (selectors.hasOwnProperty(key)) {
+                if (matched) matched = labels[key] == selectors[key];
             }
         }
         return matched;
     }
 
-    handleEndpoint(action: string, resources: IControllerResources) {
-        
-        let selected = this.match_selectors( resources.selector, { controller: this.context.config.name });
-        if (!selected) {
-            this.context.log({ "code": "k8s:endpoint:skipped", action: action, selector: resources.selector, controller: this.context.config.name, paths: _.keys(resources.paths) });
+    handleOpenAPISpec(action: string, spec: IControllerOpenAPI) {
+        let resources: IControllerResources = spec.spec;
+        let selectors = _.extend({}, this.options.labels);
+        let labels = spec.metadata.labels || {};
+
+        // check we are match our CRD
+        let type_matched = (spec.kind == this.kind) && (spec.apiVersion == this.group+"/"+this.version);
+        let matches = type_matched && this.match_selectors( labels, selectors);
+        if (!matches) {
+            this.context.log({ "code": "k8s:endpoint:skipped", action: action, selectors: selectors, labels: labels, controller: this.context.config.name, paths: _.keys(resources.paths) });
             return;
         }
 

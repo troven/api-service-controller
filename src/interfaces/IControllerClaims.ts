@@ -1,6 +1,6 @@
 
 
-interface IControllerClaims {
+export interface IControllerClaims {
     name: string;
     pattern: string;
 }

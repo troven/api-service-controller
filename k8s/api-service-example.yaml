@@ -1,12 +1,11 @@
 ---
-apiVersion: k8s.troven.io/v1alpha1
+apiVersion: k8s.a6s.dev/v1
 kind: OpenAPI
 metadata:
   name: api-service-example
-spec:
-  selector:
+  labels:
     controller: "api-service-controller"
-
+spec:
   paths:
     /example/swagger:
       get:
@@ -20,13 +19,13 @@ spec:
           proxy:
             reuseJWT: true
             target: http://localhost:5008/swagger
+        # security:
+        #   - oauth2_jwt: [ "controller:api" ]
         responses:
          '200':
             description: "200 response"
             content:
               application/json: {}
-        security:
-          - oauth2_jwt: [ "controller:api:swagger" ]
 
     /example/healthz:
       get:
@@ -34,6 +33,8 @@ spec:
         feature:
           proxy:
             target: http://localhost:5010/healthz
+        # security:
+        #   - oauth2_jwt: [ "controller:api" ]
         responses:
          '200':
             description: "200 response"
@@ -55,11 +56,11 @@ spec:
             ignorePath: true
             secure: false
             target: http://localhost:5010/echo/
+        # security:
+        #   - oauth2_jwt: [ "controller:api" ]
         responses:
          '200':
             description: "200 response"
             content:
               application/json: {}
-        # security:
-        #   - oauth2_jwt: [ "controller:api:swagger" ]
 

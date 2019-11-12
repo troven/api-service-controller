@@ -5,8 +5,8 @@
     "name": "openapis.k8s.troven.io"
   },
   "spec": {
-    "group": "k8s.troven.io",
-    "version": "v1alpha1",
+    "group": "k8s.a6s.dev",
+    "version": "v1",
     "names": {
       "kind": "OpenAPI",
       "listKind": "OpenAPIs",

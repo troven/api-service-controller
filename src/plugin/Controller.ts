@@ -18,6 +18,7 @@
  */
 
 import {IChassisPlugin, IChassisContext, IChassisPluginOptions, Operation, OpenAPI } from "api-service-core";
+import { IControllerResource } from "../interfaces/IControllerResources"
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
@@ -35,39 +36,33 @@ import * as assert from "assert";
 export class ControllerPlugin implements IChassisPlugin {
 
     name: string = "controller";
-    group: string = "k8s.troven.io"
-    version: string = "v1alpha1"
-    type: string = "OpenAPI"
-
     // routes: any = {};
     watcher: K8sWatcher;
     kc: k8s.KubeConfig;
 
     install(context: IChassisContext, _options: IChassisPluginOptions) {
-        let options: any = _.extend( { crd: true, enabled: true, folder: false }, _options);
         let openapi: OpenAPIPlugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
         assert(openapi, "openapi.plugin not loaded");
-        let namespace = options.namespace || process.env.K8S_NAMESPACE;
+
+        let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||false }, _options);
 
         // set watcher URL if a namespace is found
-        options.url = namespace?"/apis/"+this.group+"/"+this.version+"/namespaces/"+namespace+"/"+this.type:false;
-
         this.kc = new k8s.KubeConfig();
         this.kc.loadFromDefault();
 
         options.crd && this.createCRD(this.kc, CRD);
 
-        this.watch(namespace, context, options);
+        this.watch(context, options);
     }
 
-    watch(namespace: string, context: IChassisContext, options: any) {
+    watch(context: IChassisContext, options: any) {
 
-        context.log({"code": "api:k8s:watching", "message": "watching controllers", namespace: namespace});
+        context.log({"code": "api:k8s:watching", "message": "watching controllers", namespace: options.namespace});
 
         try {
             this.watcher = new K8sWatcher(context, this.kc, options);
         } catch (e) {
-            context.error({ code: "api:k8s:watch:failed", namespace: namespace });
+            context.error({ code: "api:k8s:watch:failed", namespace: options.namespace });
         }
 
         let plugin: OpenAPIPlugin = context.plugins.get("openapi") as OpenAPIPlugin;
