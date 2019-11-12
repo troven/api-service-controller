@@ -1,6 +1,5 @@
 name: api-service-controller
 port: 5008
-host: controller.demo.troven.co
 
 auditor:
   enabled: true
@@ -21,25 +20,15 @@ features:
   jwt:
     secret: false
     claims:
-      jti: "1234"
 
   pipeline:
     before:
-      api.gregarious:
-        headers:
-          X-BEFORE: true
     after:
 
   openapi:
     enabled: true
     before:
-      api.gregarious:
-        headers:
-          X-BEFORE: true
     after:
-      api.gregarious:
-        headers:
-          X-AFTER: true
 
   controller:
     enabled: true
@@ -49,28 +38,17 @@ features:
 
 openapi:
   servers:
-    - url: https://api.example.k8s.net.au/
+    - url: https://api.example.a6s.dev/
   info:
     title: Controller OpenAPI
   paths:
-    # /:
-    #   all:
-    #     feature:
-    #       before:
-    #         gregarious:
-    #           headers:
-    #             X-FEATURE: true
-
     /healthz:
       get:
         summary: Health check
         feature:
           before:
-            # api.gregarious:
-            #   headers:
-            #     X-HEALTHZ-BEFORE: true
-          after:
           featureId: api.heartbeat
+          after:
         responses:
          '200':
             description: "200 response"
@@ -81,7 +59,8 @@ openapi:
       get:
         summary: Open API docs
         feature:
-          featureId: api.apidocs
+          apidocs:
+            enable: true
         responses:
          '200':
             description: "200 response"

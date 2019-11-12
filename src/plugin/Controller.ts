@@ -17,7 +17,7 @@
  * from Troven Pty Ltd.
  */
 
-import {IChassisPlugin, IChassisContext, IChassisPluginOptions, Operation } from "api-service-core";
+import {IChassisPlugin, IChassisContext, IChassisPluginOptions, Operation, OpenAPI } from "api-service-core";
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
@@ -70,13 +70,15 @@ export class ControllerPlugin implements IChassisPlugin {
             context.error({ code: "api:k8s:watch:failed", namespace: namespace });
         }
 
-        let openapi:OpenAPIPlugin = context.plugins.get("openapi") as OpenAPIPlugin;
-        assert(openapi, "openapi is not configured");
+        let plugin: OpenAPIPlugin = context.plugins.get("openapi") as OpenAPIPlugin;
+        assert(plugin, "openapi plugin is not configured");
+        let openapi: OpenAPI = plugin.spec;
+        assert(openapi, "missing openapi spec");
 
         this.watcher.on("added", function(iwr: IControllerResource) {
             let options: any = iwr as any;
             let operation = new Operation(context, iwr.method, iwr.path, options );
-            openapi.route(operation);
+            openapi.paths.add(operation);
             context.log({"code": "api:k8s:endpoint:added", "message": "k8s added", method: operation.actionId, resource: operation.resource, operationId: operation.operationId });
         });
     }

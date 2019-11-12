@@ -1,0 +1,47 @@
+name: api-service-controller
+port: 5008
+
+auditor:
+  enabled: true
+  File:
+    filename: api-controller.audit.log
+
+logging:
+  enabled: true
+  File:
+    filename: api-controller.log
+
+features:
+  payload:
+
+  prometheus:
+    enabled: true
+
+  jwt:
+    secret: false
+    claims:
+      jti: "1234"
+
+  pipeline:
+    before:
+      api.gregarious:
+        headers:
+          X-BEFORE: true
+    after:
+
+  openapi:
+    enabled: true
+    before:
+      api.gregarious:
+        headers:
+          X-BEFORE: true
+    after:
+      api.gregarious:
+        headers:
+          X-AFTER: true
+
+  controller:
+    enabled: true
+    crd: false
+    folder: "./k8s/"
+
