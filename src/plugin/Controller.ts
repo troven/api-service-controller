@@ -24,6 +24,7 @@ import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
 import * as _ from "lodash";
 import OpenAPIPlugin from "api-service-core/lib/plugins/openapi";
+import { IncomingMessage } from "http";
 
 /**
  * ControllerPlugin
@@ -47,14 +48,18 @@ export class ControllerPlugin implements IChassisPlugin {
         this.kc = new k8s.KubeConfig();
         this.kc.loadFromDefault();
 
-        options.crd && this.createCRD(this.kc, CRD);
+        options.crd && this.createCRD(this.kc, CRD).then( (crd) => {
+            context.log({ code: "api:k8s:watch:crd", message: crd.body.metadata.name || "missing" });
+        }).catch ((err)=> {
+            context.warn({ code: "api:k8s:watch:crd:failed", message: err?err.message:"" });
+        })
 
         context.bus.on("api:start", ()=> {
             this.plugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
             if (this.plugin) {
                 this.watch(context, options);
             } else {
-                context.warn({ code: "api:k8s:watch:openapi:missing", options: options });
+                context.warn({ code: "api:k8s:openapi:missing", message: "missing 'openapi' plugin", options: options });
             }
         });
     }
@@ -79,7 +84,7 @@ export class ControllerPlugin implements IChassisPlugin {
         });
     }
 
-    createCRD(kc: k8s.KubeConfig, manifest: any): Promise<any> {
+    createCRD(kc: k8s.KubeConfig, manifest: any): Promise<{ response: IncomingMessage; body: k8s.V1beta1CustomResourceDefinition; }>{
         let api: k8s.Apiextensions_v1beta1Api = kc.makeApiClient( k8s.Apiextensions_v1beta1Api);
         return api.createCustomResourceDefinition(manifest);
     }
