@@ -17,13 +17,12 @@
  * from Troven Pty Ltd.
  */
 
-import {IChassisPlugin, IChassisContext, Operation, OpenAPI } from "api-service-core";
+import {IChassisPlugin, IChassisContext, Operation, OpenAPI, OpenAPIPlugin } from "api-service-core";
 import { IControllerOperation } from "../interfaces/IControllerResources"
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
 import * as _ from "lodash";
-import OpenAPIPlugin from "api-service-core/lib/plugins/openapi";
 import { IncomingMessage } from "http";
 
 /**
