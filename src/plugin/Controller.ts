@@ -17,7 +17,7 @@
  * from Troven Pty Ltd.
  */
 
-import {IChassisPlugin, IChassisContext, IChassisPluginOptions, Operation, OpenAPI } from "api-service-core";
+import {IChassisPlugin, IChassisContext, Operation, OpenAPI } from "api-service-core";
 import { IControllerOperation } from "../interfaces/IControllerResources"
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
@@ -41,7 +41,7 @@ export class ControllerPlugin implements IChassisPlugin {
     kc: k8s.KubeConfig;
     plugin: OpenAPIPlugin;
 
-    install(context: IChassisContext, _options: IChassisPluginOptions) {
+    install(context: IChassisContext, _options: any) {
 
         let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||false }, _options);
 
@@ -75,11 +75,13 @@ export class ControllerPlugin implements IChassisPlugin {
         }
 
         let openapi: OpenAPI = this.plugin.openapi;
+        let self = this;
 
         context.bus.on("k8s:added", function(iwr: IControllerOperation) {
             let options: any = iwr as any;
             let operation = new Operation(context, iwr.actionId, iwr.resource, options );
             openapi.paths.add(operation);
+            self.plugin.route(operation);
             context.log({"code": "api:k8s:endpoint:added", "message": "k8s added", method: operation.actionId, resource: operation.resource, operationId: operation.operationId });
         });
     }

@@ -7,12 +7,24 @@ metadata:
     controller: "api-service-controller"
 spec:
   paths:
+    /example/heartbeat:
+      get:
+        summary: swagger via proxy
+        feature:
+          heartbeat:
+            enabled: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
     /example/swagger:
       get:
         summary: swagger via proxy
         feature:
           before:
-            api.gregarious:
+            gregarious:
               headers:
                 "X-SWAGGER-BEFORE": true
           after:
@@ -31,8 +43,12 @@ spec:
       get:
         summary: Health check via proxy
         feature:
+          after:
+            gregarious:
+              headers:
+                X-AFTER: true
           proxy:
-            target: http://localhost:5010/healthz
+            target: http://localhost:5008/healthz
         # security:
         #   - oauth2_jwt: [ "controller:api" ]
         responses:
@@ -45,17 +61,16 @@ spec:
       get:
         summary: Proxy to echo
         feature:
-          featureId: api.proxy
-          jwt_authorize:
-            claims:
-              aud: "1234"
+          # jwt_authorize:
+          #   claims:
+          #     aud: "1234"
           proxy:
             reuseJWT: false
             toProxy: true
             prependPath: true
             ignorePath: true
             secure: false
-            target: http://localhost:5010/echo/
+            target: http://localhost:5008/echo/
         # security:
         #   - oauth2_jwt: [ "controller:api" ]
         responses:
