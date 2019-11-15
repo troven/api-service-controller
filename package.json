@@ -1,8 +1,8 @@
 {
   "name": "api-service-controller",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "description": "OpenAPI middleware for K8s",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "start": "tsc -d && node lib/index.js",
