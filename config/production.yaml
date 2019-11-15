@@ -57,7 +57,7 @@ openapi:
             content:
               application/json: {}
 
-    /swagger:
+    /:
       get:
         summary: Open API docs
         feature:
@@ -70,7 +70,7 @@ openapi:
               application/json: {}
 
   components:
-    securitySchemes:
+    c:
       oauth2_jwt:
         type: http
         scheme: bearer

@@ -58,7 +58,7 @@ openapi:
             content:
               application/json: {}
 
-    /swagger:
+    /:
       get:
         summary: Open API docs
         feature:
