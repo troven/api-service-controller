@@ -9,6 +9,4 @@ keys
 secrets
 tmp
 *.log
-lib
-
 
