@@ -30,9 +30,8 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.2",
     "@babel/register": "^7.7.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^7.7.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.5.0",
     "typescript": "^3.2.2"
