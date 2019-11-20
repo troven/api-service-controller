@@ -56,7 +56,9 @@ openapi:
          '200':
             description: "200 response"
             content:
-              application/json: {}
+              application/json:
+                schema:
+                    $ref: "#/components/schemas/healthz"
 
     /:
       get:
@@ -71,6 +73,12 @@ openapi:
               application/json: {}
 
   components:
+    schemas:
+      healthz:
+        type: object
+        properties:
+          ok:
+            type: string
     securitySchemes:
       oauth2_jwt:
         type: http

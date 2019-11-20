@@ -9,7 +9,7 @@ spec:
   paths:
     /example/heartbeat:
       get:
-        summary: swagger via proxy
+        summary: Health check API 
         feature:
           heartbeat:
             enabled: true
@@ -17,65 +17,76 @@ spec:
          '200':
             description: "200 response"
             content:
-              application/json: {}
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/heartbeat"
 
-    /example/swagger:
-      get:
-        summary: swagger via proxy
-        feature:
-          before:
-            gregarious:
-              headers:
-                "X-SWAGGER-BEFORE": true
-          after:
-          proxy:
-            reuseJWT: true
-            target: http://localhost:5008/swagger
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/swagger:
+    #   get:
+    #     summary: OpenAPI catalog
+    #     feature:
+    #       before:
+    #         gregarious:
+    #           headers:
+    #             "X-SWAGGER-BEFORE": true
+    #       after:
+    #       proxy:
+    #         reuseJWT: true
+    #         target: http://localhost:5008/swagger
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
 
-    /example/healthz:
-      get:
-        summary: Health check via proxy
-        feature:
-          after:
-            gregarious:
-              headers:
-                X-AFTER: true
-          proxy:
-            target: http://localhost:5008/healthz
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/healthz:
+    #   get:
+    #     summary: Health check API (proxy)
+    #     feature:
+    #       after:
+    #         gregarious:
+    #           headers:
+    #             X-AFTER: true
+    #       proxy:
+    #         target: http://localhost:5008/healthz
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/heartbeat"
 
-    /example/echo:
-      get:
-        summary: Proxy to echo
-        feature:
-          # jwt_authorize:
-          #   claims:
-          #     aud: "1234"
-          proxy:
-            reuseJWT: false
-            toProxy: true
-            prependPath: true
-            ignorePath: true
-            secure: false
-            target: http://localhost:5008/echo/
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/echo:
+    #   get:
+    #     summary: Echo API (proxy)
+    #     feature:
+    #       # jwt_authorize:
+    #       #   claims:
+    #       #     aud: "1234"
+    #       proxy:
+    #         reuseJWT: false
+    #         toProxy: true
+    #         prependPath: true
+    #         ignorePath: true
+    #         secure: false
+    #         target: http://localhost:5008/echo/
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
 
+  components:
+    schemas:
+        heartbeat:
+          type: object
+          properties:
+            ok:
+              type: string
