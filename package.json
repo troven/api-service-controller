@@ -30,6 +30,7 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@babel/register": "^7.7.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^7.7.0",
     "ts-node": "^7.0.1",
