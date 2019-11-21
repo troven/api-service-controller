@@ -39,6 +39,11 @@ features:
     crd: false
     folder: "./k8s/"
 
+  mongodb:
+    host: localhost
+    port: 27017
+    database: example
+    ssl: false
 
 openapi:
   servers:
@@ -59,7 +64,6 @@ openapi:
               application/json:
                 schema:
                     $ref: "#/components/schemas/healthz"
-
     /:
       get:
         summary: Open API docs
