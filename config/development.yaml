@@ -15,6 +15,7 @@ logging:
 
 features:
   payload:
+    enabled: true
 
   prometheus:
     enabled: true
@@ -46,6 +47,6 @@ features:
     enabled: true
     crd: false
     labels:
-      controller: "api-service-controller"
-    x-folder: "./k8s/"
+      controller: "api-service-controller"  
+    folder: "./k8s/"
 

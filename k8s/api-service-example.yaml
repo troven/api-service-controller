@@ -95,6 +95,23 @@ spec:
             content:
               application/json: {}
 
+    /via/*:
+      get:
+        summary: Via (Wildcard proxy)
+        feature:
+          proxy:
+            reuseJWT: false
+            toProxy: false
+            prependPath: true
+            ignorePath: false
+            secure: false
+            target: http://localhost:5008/echo/
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
   components:
     schemas:
         heartbeat:

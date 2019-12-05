@@ -17,6 +17,10 @@ features:
   logging:
 
   payload:
+    enabled: true
+
+  cors:
+    enabled: true
 
   prometheus:
     enabled: true

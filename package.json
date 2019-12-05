@@ -14,27 +14,27 @@
   "license": "ISC",
   "dependencies": {
     "@kubernetes/client-node": "^0.8.2",
-    "@types/node": "^10.17.5",
+    "@types/node": "^10.17.6",
     "ajv": "^6.10.2",
     "api-service-common": "^0.11.4",
     "api-service-core": "^0.53.7",
     "api-service-mongo": "^0.15.3",
-    "assert": "^1.4.1",
+    "assert": "^1.5.0",
     "config": "^1.28.1",
     "debug": "^4.1.1",
-    "esm": "^3.0.84",
+    "esm": "^3.2.25",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.15",
-    "ms": "^2.1.1",
+    "ms": "^2.1.2",
     "recursive-readdir": "^2.2.2",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/register": "^7.7.0",
+    "@babel/core": "^7.7.4",
+    "@babel/register": "^7.7.4",
     "ts-node": "^7.0.1",
-    "tslint": "^5.5.0",
-    "typescript": "^3.2.2"
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   },
   "directories": {
     "lib": "src"

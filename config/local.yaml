@@ -34,7 +34,7 @@ features:
     before:
     after:
 
-  controller:
+  x-controller:
     enabled: true
     crd: false
     folder: "./local/k8s/"
