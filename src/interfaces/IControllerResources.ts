@@ -9,7 +9,8 @@ export interface IControllerOperation {
 }
 
 export interface IControllerResources {
-    paths: {IControllerOperation};
+    paths: { IControllerOperation };
+    components: any;
 }
 
 

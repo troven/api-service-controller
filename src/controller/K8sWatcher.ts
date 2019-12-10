@@ -1,8 +1,9 @@
 import * as k8s from '@kubernetes/client-node';
 import * as _ from "lodash";
 import * as RR from "recursive-readdir";
-import { Vars, IChassisContext } from "api-service-core";
-import { IControllerResources, IControllerResource as IControllerOperation, IControllerOpenAPI } from '../interfaces';
+import { Vars, IChassisContext, OpenAPIPlugin } from "api-service-core";
+import { IControllerResource as IControllerOperation, IControllerOpenAPI } from '../interfaces';
+import { IOpenAPIv3 } from 'api-service-core/lib/interfaces';
 
 // enum WatchActions {
 //     added = 'added',
@@ -90,7 +91,7 @@ export class K8sWatcher  {
      * @param spec 
      */
     handleOpenAPISpec(action: string, spec: IControllerOpenAPI) {
-        let resources: IControllerResources = spec.spec;
+        let api_spec: IOpenAPIv3 = spec.spec as any;
         let selectors = _.extend({}, this.options.labels);
         let labels = spec.metadata.labels || {};
 
@@ -98,12 +99,16 @@ export class K8sWatcher  {
         let type_matched = (spec.kind == this.kind) && (spec.apiVersion == this.group+"/"+this.version);
         let matches = type_matched && this.match_selectors( labels, selectors);
         if (!matches) {
-            this.context.log({ "code": "k8s:endpoint:skipped", action: action, selectors: selectors, labels: labels, controller: this.context.config.name, paths: _.keys(resources.paths) });
+            this.context.log({ "code": "k8s:endpoint:skipped", action: action, selectors: selectors, labels: labels, controller: this.context.config.name, paths: _.keys(api_spec.paths) });
             return;
         }
 
-        for(let p in resources.paths) {
-            let methods = resources.paths[p];
+        // import schemas
+        let openapi_plugin: OpenAPIPlugin = this.context.plugins.get("openapi") as OpenAPIPlugin;
+        openapi_plugin.openapi.schemas.openapi(api_spec);
+
+        for(let p in api_spec.paths) {
+            let methods = api_spec.paths[p];
             for(let m in methods) {
                 let operation = _.extend( { resource: p, actionId: m}, methods[m]) as IControllerOperation;
                 this.context.log({ "code": "k8s:endpoint", action: action, operation: operation });

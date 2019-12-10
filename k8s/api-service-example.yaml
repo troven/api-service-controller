@@ -101,11 +101,12 @@ spec:
         feature:
           proxy:
             reuseJWT: false
+            logLevel: debug
             toProxy: false
-            prependPath: true
+            prependPath: false
             ignorePath: false
             secure: false
-            target: http://localhost:5008/echo/
+            target: http://localhost:5010
         responses:
          '200':
             description: "200 response"
@@ -114,8 +115,8 @@ spec:
 
   components:
     schemas:
-        heartbeat:
-          type: object
-          properties:
-            ok:
-              type: string
+      heartbeat:
+        type: object
+        properties:
+          ok:
+            type: string

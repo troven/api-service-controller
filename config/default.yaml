@@ -54,6 +54,7 @@ openapi:
     - url: https://api.example.a6s.dev/
   info:
     title: Controller OpenAPI
+
   paths:
     /healthz:
       get:
@@ -67,7 +68,7 @@ openapi:
             content:
               application/json:
                 schema:
-                    $ref: "#/components/schemas/healthz"
+                  $ref: "#/components/schemas/healthz"
     /:
       get:
         summary: Open API docs
@@ -93,5 +94,3 @@ openapi:
         scheme: bearer
         description: JWT bearer key to authorize requests.
         bearerFormat: JWT
-        name: authorization
-        in: header
