@@ -95,8 +95,35 @@ spec:
             content:
               application/json: {}
 
+    /example/debug/:
+      get:
+        operationId: debug.get
+        summary: Debug API
+        feature:
+          debug:
+            body: true
+            echo: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+      post:
+        operationId: debug.post
+        summary: Debug API
+        feature:
+          debug:
+            body: true
+            echo: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
     /via/*:
       get:
+        operationId: proxy.get
         summary: Via (Wildcard proxy)
         feature:
           proxy:
@@ -106,7 +133,30 @@ spec:
             prependPath: false
             ignorePath: false
             secure: false
-            target: http://localhost:5010
+            target: http://localhost:5008
+            secretEnvKey: NODE_ENV
+            secretHeader: x-injected-node-env
+            secretHeaderType: raw
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+      post:
+        operationId: proxy.post
+        summary: Via (Wildcard proxy)
+        feature:
+          proxy:
+            reuseJWT: false
+            logLevel: debug
+            toProxy: false
+            prependPath: false
+            ignorePath: false
+            secure: false
+            target: http://localhost:5008
+            secretEnvKey: NODE_ENV
+            secretHeader: x-node-env
+            secretHeaderType: raw
         responses:
          '200':
             description: "200 response"
