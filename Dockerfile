@@ -8,7 +8,7 @@ LABEL author="cto@troven.co"
 # Prepare NPM
 
 COPY package.json package.json
-COPY VERSION VERSION
+COPY AS-BUILT-VERSION AS-BUILT-VERSION
 RUN npm install
 
 # Compile our source
