@@ -50,7 +50,15 @@ export class ControllerPlugin implements IChassisPlugin {
         options.crd && this.createCRD(this.kc, CRD).then( (crd) => {
             context.log({ code: "api:k8s:watch:crd", message: crd.body.metadata.name || "missing" });
         }).catch ((err)=> {
-            context.warn({ code: "api:k8s:watch:crd:failed", message: err?err.message:"" });
+            if (err.response && err.response.body ) {
+                err = err.response.body;
+                if (err.code==409)
+                    context.log({ code: "api:k8s:watch:crd:exist", message: err?err.message:"" });
+                else
+                    context.warn({ code: "api:k8s:watch:crd:failed", message: err?err.message:"", error: err });
+            } else {
+                context.warn({ code: "api:k8s:watch:crd:error", message: err?err.message:"", error: err });
+            }
         })
 
         context.bus.on("api:start", ()=> {
