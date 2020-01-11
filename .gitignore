@@ -5,6 +5,7 @@ bower_components
 .idea
 .npmrc
 local
+config/local.yaml
 keys
 secrets
 tmp
