@@ -3,13 +3,9 @@ port: 5008
 
 auditor:
   enabled: true
-  File:
-    filename: api-controller.audit.log
 
 logging:
   enabled: true
-  File:
-    filename: api-controller.log
   Console:
     enabled: true
 
