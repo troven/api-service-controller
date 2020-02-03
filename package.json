@@ -4,6 +4,9 @@
   "description": "OpenAPI middleware for K8s",
   "main": "lib/start.js",
   "types": "lib/index.d.ts",
+  "bin": {
+    "api-controller": "bin/start.js"
+  },
   "scripts": {
     "start": "tsc -d && node lib/start.js",
     "boot": "node lib/start.js",

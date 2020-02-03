@@ -95,7 +95,7 @@ spec:
             content:
               application/json: {}
 
-    /example/debug/:
+    /example/debug:
       get:
         operationId: debug.get
         summary: Debug API
