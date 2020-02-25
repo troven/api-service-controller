@@ -54,6 +54,18 @@ openapi:
     title: Controller OpenAPI
 
   paths:
+    /:
+      get:
+        summary: Open API docs
+        feature:
+          apidocs:
+            enable: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
     /healthz:
       get:
         summary: Health check
@@ -67,17 +79,23 @@ openapi:
               application/json:
                 schema:
                   $ref: "#/components/schemas/healthz"
-    /:
+
+    /health:
       get:
-        summary: Open API docs
+        summary: Health check
         feature:
-          apidocs:
-            enable: true
+          heartbeat:
+            enabled: true
         responses:
          '200':
             description: "200 response"
             content:
-              application/json: {}
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: string
 
   components:
     schemas:

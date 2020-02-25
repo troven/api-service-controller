@@ -45,4 +45,3 @@ features:
     labels:
       controller: "api-service-controller"  
     folder: "./k8s/"
-

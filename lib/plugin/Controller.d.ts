@@ -34,6 +34,7 @@ export declare class ControllerPlugin implements IChassisPlugin {
     kc: k8s.KubeConfig;
     plugin: OpenAPIPlugin;
     install(context: IChassisContext, _options: any): void;
+    install_crd(context: IChassisContext, options: any): void;
     watch(context: IChassisContext, options: any): void;
     createCRD(kc: k8s.KubeConfig, manifest: any): Promise<{
         response: IncomingMessage;

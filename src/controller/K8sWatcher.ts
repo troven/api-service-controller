@@ -21,10 +21,11 @@ export class K8sWatcher  {
     kind: string = "OpenAPI";
 
     constructor(protected context: IChassisContext, kc: k8s.KubeConfig, protected options: any) {
-        if (options.namespace) {
+        if (kc && options.namespace) {
             let url = "/apis/"+this.group+"/"+this.version+"/namespaces/"+options.namespace+"/"+this.type;
             this.watchK8s(kc, url, options.k8s || {} );
         }
+
         if (options.folder) {
             this.watchFolder(options. folder);
         }
@@ -106,6 +107,8 @@ export class K8sWatcher  {
         // import schemas
         let openapi_plugin: OpenAPIPlugin = this.context.plugins.get("openapi") as OpenAPIPlugin;
         openapi_plugin.openapi.schemas.openapi(api_spec);
+
+        openapi_plugin.openapi.index_tags(api_spec.tags);
 
         for(let p in api_spec.paths) {
             let methods = api_spec.paths[p];

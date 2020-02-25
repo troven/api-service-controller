@@ -44,6 +44,21 @@ export class ControllerPlugin implements IChassisPlugin {
 
         let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||false }, _options);
 
+        if (_options.namespace) {
+            this.install_crd(context, _options);
+        }
+
+        context.bus.on("api:start", ()=> {
+            this.plugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
+            if (this.plugin) {
+                this.watch(context, options);
+            } else {
+                context.warn({ code: "api:k8s:openapi:missing", message: "missing 'openapi' plugin", options: options });
+            }
+        });
+    }
+
+    install_crd(context: IChassisContext, options: any) {
         this.kc = new k8s.KubeConfig();
         this.kc.loadFromDefault();
 
@@ -61,19 +76,9 @@ export class ControllerPlugin implements IChassisPlugin {
             }
         })
 
-        context.bus.on("api:start", ()=> {
-            this.plugin = (context.plugins.get("openapi") as any) as OpenAPIPlugin;
-            if (this.plugin) {
-                this.watch(context, options);
-            } else {
-                context.warn({ code: "api:k8s:openapi:missing", message: "missing 'openapi' plugin", options: options });
-            }
-        });
     }
 
     watch(context: IChassisContext, options: any) {
-
-        context.log({"code": "api:k8s:watching", "message": "watching controllers", options: options});
 
         try {
             this.watcher = new K8sWatcher(context, this.kc, options);

@@ -6,10 +6,28 @@ metadata:
   labels:
     controller: "api-service-controller"
 spec:
+  tags:
+  - name: health
+    description: Health Checks
+  - name: catalog
+    description: API Catalog
   paths:
-    /example/heartbeat:
+    /:
       get:
-        summary: Health check API 
+        summary: Open API docs
+        feature:
+          apidocs:
+            enable: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+    /healthz:
+      get:
+        summary: Health check
+        tags:
+          - health
         feature:
           heartbeat:
             enabled: true
@@ -19,153 +37,187 @@ spec:
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/heartbeat"
-
-    /example/swagger:
+                  $ref: "#/components/schemas/healthz"
+    /example/heartbeat:
       get:
-        summary: OpenAPI catalog
+        summary: Health check API 
+        tags:
+          - health
         feature:
-          before:
-            gregarious:
-              headers:
-                "X-SWAGGER-BEFORE": true
-          after:
-          proxy:
-            reuseJWT: true
-            target: http://localhost:5008/swagger
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
-
-    /example/healthz:
-      get:
-        summary: Health check API (proxy)
-        feature:
-          after:
-            gregarious:
-              headers:
-                X-AFTER: true
-          proxy:
-            target: http://localhost:5008/healthz
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
+          heartbeat:
+            enabled: true
         responses:
          '200':
             description: "200 response"
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/heartbeat"
+                  $ref: "#/components/schemas/healthz"
 
-    /example/echo:
-      get:
-        summary: Echo API (proxy)
-        feature:
-          # jwt_authorize:
-          #   claims:
-          #     aud: "1234"
-          proxy:
-            reuseJWT: false
-            toProxy: true
-            prependPath: true
-            ignorePath: true
-            secure: false
-            target: http://localhost:5008/echo/
-        # security:
-        #   - oauth2_jwt: [ "controller:api" ]
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/swagger:
+    #   get:
+    #     summary: OpenAPI catalog
+    #     tags:
+    #       - proxy
+    #       - catalog
+    #     feature:
+    #       before:
+    #         gregarious:
+    #           headers:
+    #             "X-SWAGGER-BEFORE": true
+    #       after:
+    #       proxy:
+    #         reuseJWT: true
+    #         target: http://localhost:5008/swagger
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
 
-    /example/models/:
-      get:
-        summary: CRUD API
-        feature:
-          mongodb:
-            collection: example
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/healthz:
+    #   get:
+    #     summary: Health check API (proxy)
+    #     tags:
+    #       - health
+    #       - proxy
+    #     feature:
+    #       after:
+    #         gregarious:
+    #           headers:
+    #             X-AFTER: true
+    #       proxy:
+    #         target: http://localhost:5008/healthz
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/heartbeat"
 
-    /example/debug:
-      get:
-        operationId: debug.get
-        summary: Debug API
-        feature:
-          debug:
-            body: true
-            echo: true
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
-      post:
-        operationId: debug.post
-        summary: Debug API
-        feature:
-          debug:
-            body: true
-            echo: true
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/echo:
+    #   get:
+    #     summary: Echo API (proxy)
+    #     tags:
+    #       - proxy
+    #       - debug
+    #     feature:
+    #       # jwt_authorize:
+    #       #   claims:
+    #       #     aud: "1234"
+    #       proxy:
+    #         reuseJWT: false
+    #         toProxy: true
+    #         prependPath: true
+    #         ignorePath: true
+    #         secure: false
+    #         target: http://localhost:5008/echo/
+    #     # security:
+    #     #   - oauth2_jwt: [ "controller:api" ]
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
 
-    /via/*:
-      get:
-        operationId: proxy.get
-        summary: Via (Wildcard proxy)
-        feature:
-          proxy:
-            reuseJWT: false
-            logLevel: debug
-            toProxy: false
-            prependPath: false
-            ignorePath: false
-            secure: false
-            target: http://localhost:5008
-            secretEnvKey: NODE_ENV
-            secretHeader: x-injected-node-env
-            secretHeaderType: raw
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
-      post:
-        operationId: proxy.post
-        summary: Via (Wildcard proxy)
-        feature:
-          proxy:
-            reuseJWT: false
-            logLevel: debug
-            toProxy: false
-            prependPath: false
-            ignorePath: false
-            secure: false
-            target: http://localhost:5008
-            secretEnvKey: NODE_ENV
-            secretHeader: x-node-env
-            secretHeaderType: raw
-        responses:
-         '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    # /example/models/:
+    #   get:
+    #     summary: CRUD API
+    #     tags:
+    #       - data
+    #     feature:
+    #       mongodb:
+    #         collection: example
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
+
+    # /example/debug:
+    #   get:
+    #     operationId: debug.get
+    #     summary: Debug API
+    #     tags:
+    #       - debug
+    #     feature:
+    #       debug:
+    #         body: true
+    #         echo: true
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
+    #   post:
+    #     operationId: debug.post
+    #     summary: Debug API
+    #     tags:
+    #       - debug
+    #     feature:
+    #       debug:
+    #         body: true
+    #         echo: true
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
+
+    # /via/*:
+    #   get:
+    #     operationId: proxy.get
+    #     summary: Via (Wildcard proxy)
+    #     tags:
+    #       - proxy
+    #     feature:
+    #       proxy:
+    #         reuseJWT: false
+    #         logLevel: debug
+    #         toProxy: false
+    #         prependPath: false
+    #         ignorePath: false
+    #         secure: false
+    #         target: http://localhost:5008
+    #         secretEnvKey: NODE_ENV
+    #         secretHeader: x-injected-node-env
+    #         secretHeaderType: raw
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
+    #   post:
+    #     operationId: proxy.post
+    #     summary: Via (Wildcard proxy)
+    #     tags:
+    #       - proxy
+    #     feature:
+    #       proxy:
+    #         reuseJWT: false
+    #         logLevel: debug
+    #         toProxy: false
+    #         prependPath: false
+    #         ignorePath: false
+    #         secure: false
+    #         target: http://localhost:5008
+    #         secretEnvKey: NODE_ENV
+    #         secretHeader: x-node-env
+    #         secretHeaderType: raw
+    #     responses:
+    #      '200':
+    #         description: "200 response"
+    #         content:
+    #           application/json: {}
 
   components:
     schemas:
-      heartbeat:
+      healthz:
         type: object
         properties:
           ok:
