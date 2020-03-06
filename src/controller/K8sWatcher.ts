@@ -106,7 +106,7 @@ export class K8sWatcher  {
 
         // import schemas
         let openapi_plugin: OpenAPIPlugin = this.context.plugins.get("openapi") as OpenAPIPlugin;
-        openapi_plugin.openapi.schemas.openapi(api_spec);
+        openapi_plugin.openapi.schemas.init(api_spec);
 
         openapi_plugin.openapi.index_tags(api_spec.tags);
 
