@@ -65,7 +65,17 @@ openapi:
             description: "200 response"
             content:
               application/json: {}
-
+    /datadict:
+      get:
+        summary: Open API docs
+        feature:
+          datadict:
+            enable: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
     /healthz:
       get:
         summary: Health check
