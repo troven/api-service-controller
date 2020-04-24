@@ -2,7 +2,7 @@ import * as k8s from '@kubernetes/client-node';
 import * as _ from "lodash";
 import * as RR from "recursive-readdir";
 import { Vars, IChassisContext, OpenAPIPlugin } from "api-service-core";
-import { IControllerResource as IControllerOperation, IControllerOpenAPI } from '../interfaces';
+import { IControllerOperation, IControllerOpenAPI } from '../interfaces';
 import { IOpenAPIv3 } from 'api-service-core/lib/interfaces';
 
 // enum WatchActions {
