@@ -16,7 +16,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Troven Pty Ltd.
  */
-/// <reference types="node" />
 import { IChassisPlugin, IChassisContext, OpenAPIPlugin } from "api-service-core";
 import * as k8s from '@kubernetes/client-node';
 import { K8sWatcher } from "../controller/K8sWatcher";
