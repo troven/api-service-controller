@@ -25,7 +25,6 @@ features:
 
   jwt:
     secret: false
-    claims:
 
   pipeline:
     before:
@@ -94,6 +93,9 @@ openapi:
       get:
         summary: Health check
         feature:
+          jwt:
+            claims:
+              -$.resource_access.account.roles = [ "api:health" ]
           heartbeat:
             enabled: true
         responses:
