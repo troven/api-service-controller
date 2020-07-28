@@ -201,7 +201,7 @@ spec:
     #         content:
     #           application/json: {}
 
-    /models/:organisation/:
+    /models/{organisation}/:
       get:
         parameters:
           - in: path
@@ -230,7 +230,7 @@ spec:
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:create" ]
-    /models/:organisation/:_id:
+    /models/{organisation}/{_id}:
       get:
         parameters:
           - in: path
@@ -249,7 +249,7 @@ spec:
           mongodb:
             collection: example
             enabled: true
-            filterBy: [_id]
+            # filterBy: [_id]
             # filterBy: _id
         x-security:
         - oauth2_jwt: [ "models:read" ]

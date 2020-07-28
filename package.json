@@ -20,7 +20,7 @@
     "@types/node": "^10.17.26",
     "ajv": "^6.10.2",
     "api-service-common": "^0.12.32",
-    "api-service-core": "^0.55.48",
+    "api-service-core": "^0.55.51",
     "api-service-mongo": "^0.15.31",
     "assert": "^1.5.0",
     "config": "^1.28.1",
