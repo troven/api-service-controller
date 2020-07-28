@@ -125,20 +125,6 @@ spec:
     #         content:
     #           application/json: {}
 
-    # /example/models/:
-    #   get:
-    #     summary: CRUD API
-    #     tags:
-    #       - data
-    #     feature:
-    #       mongodb:
-    #         collection: example
-    #     responses:
-    #      '200':
-    #         description: "200 response"
-    #         content:
-    #           application/json: {}
-
     # /example/debug:
     #   get:
     #     operationId: debug.get
@@ -214,6 +200,99 @@ spec:
     #         description: "200 response"
     #         content:
     #           application/json: {}
+
+    /models/:organisation/:
+      get:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+        feature:
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:list" ]
+      post:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+        feature:
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:create" ]
+    /models/:organisation/:_id:
+      get:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        feature:
+          mongodb:
+            collection: example
+            enabled: true
+            filterBy: [_id]
+            # filterBy: _id
+        x-security:
+        - oauth2_jwt: [ "models:read" ]
+      put:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        feature:
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:update" ]
+      delete:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        feature:
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:delete" ]
 
   components:
     schemas:
