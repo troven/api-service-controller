@@ -333,3 +333,15 @@ spec:
         properties:
           title:
             type: string
+      recursive:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
+            type: string
+          recursives:
+            type: array
+            schema:
+              $ref: "#/components/schemas/recursive"
+
