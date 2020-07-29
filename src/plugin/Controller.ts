@@ -90,8 +90,9 @@ export class ControllerPlugin implements IChassisPlugin {
         let self = this;
 
         context.bus.on("k8s:added", function(iwr: IControllerOperation) {
-            let options: any = iwr as any;
-            let operation = new Operation(context, iwr.actionId, iwr.resource, options );
+            let op_spec: any = iwr as any;
+            let operation = new Operation(context, iwr.actionId, iwr.resource, op_spec );
+            // console.log("OP.ADDED: %j", op_spec);
             openapi.add(operation);
             self.plugin.route(operation);
             context.log({"code": "api:k8s:endpoint:added", "message": "k8s added", method: operation.actionId, resource: operation.resource, operationId: operation.operationId });

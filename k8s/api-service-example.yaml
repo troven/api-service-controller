@@ -211,6 +211,9 @@ spec:
             required: true
             description: type of models
         feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "amplify:platform:user" ]
           mongodb:
             collection: example
             enabled: true
@@ -224,7 +227,15 @@ spec:
               type: string
             required: true
             description: type of models
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/model"
         feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "amplify:platform:owner" ]
           mongodb:
             collection: example
             enabled: true
@@ -246,6 +257,9 @@ spec:
             required: true
             description: ID used to identify model
         feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "amplify:platform:user" ]
           mongodb:
             collection: example
             enabled: true
@@ -267,7 +281,15 @@ spec:
               type: string
             required: true
             description: ID used to identify model
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/model"
         feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "amplify:platform:owner" ]
           mongodb:
             collection: example
             enabled: true
@@ -288,6 +310,9 @@ spec:
             required: true
             description: ID used to identify model
         feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "amplify:platform:owner" ]
           mongodb:
             collection: example
             enabled: true
@@ -300,4 +325,11 @@ spec:
         type: object
         properties:
           ok:
+            type: string
+      model:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
             type: string
