@@ -22,7 +22,8 @@
 import { Chassis } from "api-service-core";
 import { default_features  } from "api-service-common";
 import { MongoStore  } from "api-service-mongo";
-import { ControllerPlugin } from "./plugin/Controller";
+import { ControllerPlugin } from "./plugin/ControllerPlugin";
+import { ConfigsPlugin } from "./plugin/ConfigsPlugin";
 const config = require("config");
 
 // configure a new chassis
@@ -30,6 +31,7 @@ let chassis = new Chassis(config, default_features);
 
 // register our custom plugin
 chassis.registerPlugin( new ControllerPlugin() );
+chassis.registerPlugin( new ConfigsPlugin() );
 chassis.registerPlugin( new MongoStore() );
 
 // start the Chassis ...

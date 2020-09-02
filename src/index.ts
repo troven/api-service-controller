@@ -1,4 +1,6 @@
 
-export { ControllerPlugin } from "./plugin/Controller" 
-export { K8sWatcher } from "./controller/K8sWatcher"
+export { ControllerPlugin } from "./plugin/ControllerPlugin" 
+export { ConfigsPlugin } from "./plugin/ConfigsPlugin" 
+export { OpenAPIsWatcher } from "./watcher/OpenAPIsWatcher"
+export { UIsWatcher } from "./watcher/UIsWatcher"
 export { IControllerClaims, IControllerOpenAPI, IControllerResources, IControllerOperation } from "./interfaces" 

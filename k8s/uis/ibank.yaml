@@ -1,0 +1,16 @@
+apiVersion: k8s.a6s.dev/v1
+kind: UI
+metadata:
+  name: ibank-ui
+  labels:
+    controller: "api-service-controller"
+spec:
+  path: "/ibank"
+  component: layout/Layout
+  name: indicator_bank
+  meta:
+    title: Indicator Bank
+    icon: form
+  children:
+  - $ref: domains-ui
+  - $ref: indicators-ui

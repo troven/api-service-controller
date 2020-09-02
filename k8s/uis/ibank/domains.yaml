@@ -1,0 +1,129 @@
+apiVersion: k8s.a6s.dev/v1
+kind: UI
+metadata:
+  name: domains-ui
+  labels:
+    controller: "api-service-controller"
+spec:
+  path: "/domains"
+  component: layout/Inner
+  redirect: "/domains/list"
+  name: Domains
+  meta:
+    title: Domains
+    icon: form
+  children:
+  - path: list
+    component: views/crud/list
+    name: ListDomains
+    props:
+      api:
+        list:
+          url: "/api/ie/domains/"
+      actions:
+        delete:
+          url: "/domains/delete/"
+          key: id
+          title: ''
+        update:
+          url: "/domains/edit/"
+          key: id
+          icon: el-icon-edit
+        create:
+          title: Create Domains
+          url: "/domains/create"
+        download:
+          title: Download Domains
+          filename: entities
+      selectable: true
+      heading: List of Domains ...
+      columns:
+      - name: id
+        title: ID
+        minWidth: 5%
+        download: false
+        unique: true
+        id: true
+      - name: title
+        title: Domain
+        minWidth: 15%
+      - name: description
+        title: Description
+        minWidth: 50%
+    meta:
+      title: List Domains
+      icon: list
+      features:
+      - advanced
+      guard:
+      - a6s-dev-cms-admin
+  - path: edit/:id(\\d+)
+    component: views/crud/edit
+    name: EditDomain
+    meta:
+      title: Edit Domain
+      noCache: true
+      activeMenu: "/domains/list"
+      guard:
+      - a6s-dev-cms-admin
+    props:
+      actions:
+        cancel:
+          url: "/domains/list"
+          title: Cancel
+        update:
+          title: Save Domain
+          url: "/domains/list"
+      hidden: false
+      api:
+        read:
+          url: "/api/ie/domains/{{id}}"
+        update:
+          url: "/api/ie/domains/{{id}}"
+      schema:
+        "$ref": "#/schemas/example"
+  - path: create
+    component: views/crud/create
+    name: CreateDomain
+    meta:
+      title: Create Domain
+      icon: el-edit-outline
+      guard:
+      - a6s-dev-cms-admin
+    props:
+      actions:
+        cancel:
+          title: Cancel
+          url: "/domains/list"
+        create:
+          title: Save Domain
+          url: "/domains/list"
+      api:
+        create:
+          url: "/api/ie/domains"
+      schema:
+        "$ref": "#/schemas/example"
+  - path: upload
+    component: views/crud/upload
+    name: UploadDomain
+    meta:
+      title: Upload Domains
+      icon: excel
+      guard:
+      - a6s-dev-cms-admin
+    props:
+      heading: Upload Domains ...
+      indexBy: code
+      api:
+        list:
+          url: "/api/ie/domains/list"
+        update:
+          url: "/api/ie/domains/{{id}}"
+        create:
+          url: "/api/ie/domains/"
+      actions:
+        cancel:
+          url: "/domains/list"
+        upload:
+          title: Upload Domain
+          url: "/domains/upload"

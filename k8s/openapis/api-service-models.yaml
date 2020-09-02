@@ -1,0 +1,153 @@
+---
+apiVersion: k8s.a6s.dev/v1
+kind: OpenAPI
+metadata:
+  name: api-service-models
+  labels:
+    controller: "api-service-controller"
+spec:
+  tags:
+  - name: health
+    description: Health Checks
+  - name: catalog
+    description: API Catalog
+  paths:
+    /models/{organisation}/:
+      get:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+        feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "a6s:dev:models" ]
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:list" ]
+      post:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/model"
+        feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "a6s:dev:example" ]
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:create" ]
+    /models/{organisation}/{_id}:
+      get:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "a6s:dev:models" ]
+          mongodb:
+            collection: example
+            enabled: true
+            # filterBy: [_id]
+            # filterBy: _id
+        x-security:
+        - oauth2_jwt: [ "models:read" ]
+      put:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/model"
+        feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "a6s:dev:example" ]
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:update" ]
+      delete:
+        parameters:
+          - in: path
+            name: organisation
+            schema:
+              type: string
+            required: true
+            description: type of models
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify model
+        feature:
+          jwt:
+            claims:
+              $.realm_access.roles: [ "a6s:dev:example" ]
+          mongodb:
+            collection: example
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "models:delete" ]
+
+  components:
+    schemas:
+      model:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
+            type: string
+      recursive:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
+            type: string
+          recursives:
+            type: array
+            schema:
+              $ref: "#/components/schemas/recursive"
+

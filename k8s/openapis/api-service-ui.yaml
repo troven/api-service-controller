@@ -1,0 +1,26 @@
+---
+apiVersion: k8s.a6s.dev/v1
+kind: OpenAPI
+metadata:
+  name: api-service-ui
+  labels:
+    controller: "api-service-controller"
+spec:
+  tags:
+  - name: ui
+    description: UI Config
+  paths:
+    /ui:
+      get:
+        summary: UI Config
+        feature:
+          ui.config:
+            enable: true
+        responses:
+         '200':
+            description: "200 response"
+            content:
+              application/json: {}
+
+  components:
+    schemas:

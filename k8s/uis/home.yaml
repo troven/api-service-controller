@@ -1,0 +1,21 @@
+---
+apiVersion: k8s.a6s.dev/v1
+kind: UI
+metadata:
+  name: home-ui
+  labels:
+    controller: "api-service-controller"
+spec:
+  path: "/"
+  component: layout/Layout
+  # redirect: "/documentation/index"
+  children:
+  - path: /home
+    component: views/home
+    name: Home
+    meta:
+      title: 'Home'
+      icon: home
+      affix: true
+  - $ref: documentation-ui
+  - $ref: ibank-ui

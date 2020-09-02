@@ -20,7 +20,7 @@
 import {IChassisPlugin, IChassisContext, OpenAPI, OpenAPIPlugin, Operation } from "api-service-core";
 import { IControllerOperation } from "../interfaces/IControllerResources"
 import * as k8s from '@kubernetes/client-node';
-import { K8sWatcher } from "../controller/K8sWatcher";
+import { OpenAPIsWatcher } from "../watcher/OpenAPIsWatcher";
 import * as CRD from "../crds/OpenAPIs.json";
 import * as _ from "lodash";
 import { IncomingMessage } from "http";
@@ -28,7 +28,6 @@ import { IncomingMessage } from "http";
 /**
  * ControllerPlugin
  * ---------
- * Used when a method is not found
  *
  * @type {{name: string, title: string, fn: module.exports.fn}}
  */
@@ -36,13 +35,13 @@ export class ControllerPlugin implements IChassisPlugin {
 
     name: string = "controller";
     // routes: any = {};
-    watcher: K8sWatcher;
+    watcher: OpenAPIsWatcher;
     kc: k8s.KubeConfig;
     plugin: OpenAPIPlugin;
 
     install(context: IChassisContext, _options: any) {
 
-        let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||false }, _options);
+        let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||'' }, _options);
 
         if (_options.namespace) {
             this.install_crd(context, _options);
@@ -81,7 +80,8 @@ export class ControllerPlugin implements IChassisPlugin {
     watch(context: IChassisContext, options: any) {
 
         try {
-            this.watcher = new K8sWatcher(context, this.kc, options);
+            this.watcher = new OpenAPIsWatcher();
+            this.watcher.install(context, this.kc, options);
         } catch (e) {
             context.error({ code: "api:k8s:watch:failed", options: options });
         }

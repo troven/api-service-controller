@@ -38,7 +38,7 @@ features:
   controller:
     enabled: true
     crd: false
-    folder: "./k8s/"
+    folder: "./k8s/openapis"
 
   mongodb:
     host: localhost

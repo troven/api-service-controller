@@ -85,4 +85,4 @@ features:
     crd: false
     labels:
       controller: "api-service-controller"  
-    folder: "./k8s/"
+    folder: "./k8s/openapis"
