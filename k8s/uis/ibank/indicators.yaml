@@ -14,6 +14,54 @@ spec:
     title: Indicators
     icon: form
   children:
+  - path: list
+    "// component": "@/views/crud/list"
+    component: views/crud/list
+    name: ListIndicators
+    props:
+      api:
+        list:
+          url: "/api/ie/indicators/list"
+      actions:
+        delete:
+          url: "/indicators/delete/"
+          key: id
+          title: ''
+        update:
+          url: "/indicators/edit/"
+          key: id
+          icon: el-icon-edit
+        create:
+          title: Create Indicators
+          url: "/indicators/create"
+        download:
+          title: Download Indicators
+          filename: entities
+      selectable: true
+      heading: Manage Indicators
+      columns:
+      - name: id
+        title: ID
+        minWidth: 5%
+        download: false
+        unique: true
+        id: true
+      - name: status
+        title: Approval
+        minWidth: 10%
+      - name: author
+        title: Indicator
+        minWidth: 15%
+      - name: title
+        title: Description
+        minWidth: 50%
+    meta:
+      title: List Indicators
+      icon: list
+      features:
+      - advanced
+      guard:
+      - amplify:cms:admin
   - path: create
     component: views/crud/create
     name: CreateIndicator
@@ -30,7 +78,7 @@ spec:
           url: "/indicators/list"
       api:
         create:
-          url: "/api/:tenant/crud"
+          url: "/api/ie/indicators"
       schema:
         "$ref": "#/schemas/ie-indicator"
       ui:
@@ -58,11 +106,11 @@ spec:
         upload:
           title: Upload Indicator
           url: "/indicators/upload"
-  - path: edit/:id(\\d+)
+  - path: edit/:_id
     component: views/crud/edit
     name: EditIndicator
     meta:
-      title: 'Edit Indicator: {{hello}}'
+      title: 'Edit Indicator'
       noCache: true
       activeMenu: "/indicators/list"
     props:
@@ -76,56 +124,8 @@ spec:
       hidden: false
       api:
         read:
-          url: "/api/:tenant/crud/{{id}}"
+          url: "/api/ie/indicators/{{_id}}"
         update:
-          url: "/api/:tenant/crud/{{id}}"
+          url: "/api/ie/indicators/{{_id}}"
       schema:
         "$ref": "#/schemas/ie-indicator"
-  - path: list
-    "// component": "@/views/crud/list"
-    component: views/crud/list
-    name: ListIndicators
-    props:
-      api:
-        list:
-          url: "/api/:tenant/crud/list"
-      actions:
-        delete:
-          url: "/indicators/delete/"
-          key: id
-          title: ''
-        update:
-          url: "/indicators/edit/"
-          key: id
-          icon: el-icon-edit
-        create:
-          title: Create Indicators
-          url: "/indicators/create"
-        download:
-          title: Download Indicators
-          filename: entities
-      selectable: true
-      heading: Your profiles ...
-      columns:
-      - name: id
-        title: ID
-        minWidth: 5%
-        download: false
-        unique: true
-        id: true
-      - name: status
-        title: Approval
-        minWidth: 10%
-      - name: author
-        title: Indicator
-        minWidth: 15%
-      - name: title
-        title: Description
-        minWidth: 50%
-    meta:
-      title: List Indicators
-      icon: list
-      features:
-      - advanced
-      guard:
-      - a6s-dev-cms-admin

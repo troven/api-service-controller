@@ -6,7 +6,7 @@ metadata:
     controller: "api-service-controller"
 spec:
   path: "/domains"
-  component: layout/Inner
+  # component: layout/Inner
   redirect: "/domains/list"
   name: Domains
   meta:
@@ -22,12 +22,10 @@ spec:
           url: "/api/ie/domains/"
       actions:
         delete:
-          url: "/domains/delete/"
-          key: id
+          url: "/domains/delete/{{_id}}"
           title: ''
         update:
-          url: "/domains/edit/"
-          key: id
+          url: "/domains/edit/{{_id}}"
           icon: el-icon-edit
         create:
           title: Create Domains
@@ -36,28 +34,27 @@ spec:
           title: Download Domains
           filename: entities
       selectable: true
-      heading: List of Domains ...
+      heading: Manage Domains
       columns:
-      - name: id
-        title: ID
+      - name: code
+        title: code
         minWidth: 5%
-        download: false
         unique: true
         id: true
       - name: title
         title: Domain
-        minWidth: 15%
-      - name: description
-        title: Description
         minWidth: 50%
+      # - name: description
+      #   title: Description
+      #   minWidth: 50%
     meta:
       title: List Domains
       icon: list
       features:
       - advanced
       guard:
-      - a6s-dev-cms-admin
-  - path: edit/:id(\\d+)
+      - amplify:cms:admin
+  - path: edit/:_id
     component: views/crud/edit
     name: EditDomain
     meta:
@@ -65,7 +62,7 @@ spec:
       noCache: true
       activeMenu: "/domains/list"
       guard:
-      - a6s-dev-cms-admin
+      - amplify:cms:admin
     props:
       actions:
         cancel:
@@ -77,11 +74,28 @@ spec:
       hidden: false
       api:
         read:
-          url: "/api/ie/domains/{{id}}"
+          url: "/api/ie/domains/{{_id}}"
         update:
-          url: "/api/ie/domains/{{id}}"
+          url: "/api/ie/domains/{{_id}}"
+      heading: Edit Domain
+      ui:
+        _id: false
       schema:
-        "$ref": "#/schemas/example"
+        type: object
+        properties:
+          _id:
+            type: string
+          code:
+            type: string
+          title:
+            type: string
+          description:
+            type: string
+          # outcomes:
+          #   type: array
+          #   items:
+          #     $ref: "#/components/schemas/ie-outcomes"
+        # "$ref": "#/schemas/example"
   - path: create
     component: views/crud/create
     name: CreateDomain
@@ -89,7 +103,7 @@ spec:
       title: Create Domain
       icon: el-edit-outline
       guard:
-      - a6s-dev-cms-admin
+      - amplify:cms:admin
     props:
       actions:
         cancel:
@@ -110,7 +124,7 @@ spec:
       title: Upload Domains
       icon: excel
       guard:
-      - a6s-dev-cms-admin
+      - amplify:cms:admin
     props:
       heading: Upload Domains ...
       indexBy: code
@@ -118,7 +132,7 @@ spec:
         list:
           url: "/api/ie/domains/list"
         update:
-          url: "/api/ie/domains/{{id}}"
+          url: "/api/ie/domains/{{_id}}"
         create:
           url: "/api/ie/domains/"
       actions:

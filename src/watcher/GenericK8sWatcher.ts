@@ -26,7 +26,13 @@ export default abstract class GenericK8sWatcher<T extends IResourceType>  {
         }
 
         if (options.folder) {
-            this.watchFolder(options. folder);
+            this.watchFolder(options.folder);
+
+            if (options.every) {
+                setInterval( () => {
+                    this.watchFolder(options.folder);
+                }, options.every * 1000);
+            }
         }
 
         // install middleware (if any)

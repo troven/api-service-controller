@@ -7,7 +7,7 @@ metadata:
     controller: "api-service-controller"
 spec:
   path: "/"
-  component: layout/Layout
+  component: layout/Outer
   # redirect: "/documentation/index"
   children:
   - path: /home
@@ -16,6 +16,6 @@ spec:
     meta:
       title: 'Home'
       icon: home
-      affix: true
+      # affix: true
   - $ref: documentation-ui
   - $ref: ibank-ui

@@ -5,12 +5,13 @@ LABEL name="api-service-controller"
 LABEL title="API Controller"
 LABEL author="cto@troven.co"
 
+WORKDIR /opt/a6s/
+
 # Prepare NPM
 
 COPY package.json package.json
 COPY AS-BUILT-VERSION AS-BUILT-VERSION
 RUN npm install
-
 
 # Compile our source
 COPY tsconfig.json tsconfig.json

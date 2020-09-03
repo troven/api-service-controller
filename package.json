@@ -1,6 +1,6 @@
 {
   "name": "api-service-controller",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "description": "OpenAPI middleware for K8s",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,11 +15,11 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.8.2",
     "@types/node": "^10.17.26",
-    "api-service-common": "^0.12.33",
-    "api-service-core": "^0.55.57",
-    "api-service-mongo": "^0.15.35",
+    "api-service-core": "^0.56.0",
+    "api-service-common": "^0.13.0",
+    "api-service-mongo": "^0.16.0",
     "assert": "^1.5.0",
-    "config": "^1.28.1",
+    "config": "^3.3.1",
     "debug": "^4.1.1",
     "esm": "^3.2.25",
     "js-yaml": "^3.10.0",

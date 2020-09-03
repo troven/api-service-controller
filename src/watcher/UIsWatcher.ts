@@ -43,11 +43,11 @@ class UIMiddleware implements IChassisMiddleware {
 
     resolve(top: any, ui: any) {
         _.each(ui, (value: any, key: string) => {
-            console.log("ui.spec: %o", key);
+            // console.log("ui.spec: %o", key);
             if (key==="$ref") {
                 const deref = this.watcher.uis[value];
                 if (deref) {
-                    console.log("deref[]: %s -> %o", value, deref);
+                    // console.log("deref[]: %s -> %o", value, deref);
                     ui = this.resolve(top, deref);
                     // delete top[value]
                     // delete ui[key]
@@ -74,11 +74,11 @@ class UIMiddleware implements IChassisMiddleware {
 
             if (ui_config.routes) {
                 ui_config.routes = this.resolve( ui , ui_config.routes);
-                console.log("ui.routes[]: %o", ui_config.routes);
+                // console.log("ui.routes[]: %o", ui_config.routes);
             } else {
                 let ui_routes = this.resolve( ui , ui);
                 ui_config.routes = [];
-                console.log("ui.routes: %o", ui_routes);
+                // console.log("ui.routes: %o", ui_routes);
                 _.each(ui_routes, (r) => {
                     if (r) ui_config.routes.push(r);
                 })

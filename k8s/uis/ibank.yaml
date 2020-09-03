@@ -6,7 +6,7 @@ metadata:
     controller: "api-service-controller"
 spec:
   path: "/ibank"
-  component: layout/Layout
+  # component: layout/Inner
   name: indicator_bank
   meta:
     title: Indicator Bank
