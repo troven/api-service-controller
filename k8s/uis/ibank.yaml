@@ -5,12 +5,13 @@ metadata:
   labels:
     controller: "api-service-controller"
 spec:
-  path: "/ibank"
-  # component: layout/Inner
-  name: indicator_bank
-  meta:
-    title: Indicator Bank
-    icon: form
-  children:
-  - $ref: domains-ui
-  - $ref: indicators-ui
+  view:
+    path: "/ibank"
+    # component: layout/Inner
+    name: indicator_bank
+    meta:
+      title: Indicator Bank
+      icon: form
+    children:
+    - $ref: domains-ui
+    - $ref: indicators-ui

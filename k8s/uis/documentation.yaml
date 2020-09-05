@@ -5,19 +5,20 @@ metadata:
   labels:
     controller: "api-service-controller"
 spec:
-  path: "/documentation"
-  component: layout/Inner
-  name: Documentation
-  children:
-  - path: index
-    component: views/documentation
-    meta:
-      title: Documentation
-      icon: documentation
-      affix: true
-    props:
-      topics:
-      - title: Tech Support
-        href: http://a80d8565-csiamplifysit-csi-480e-369912601.ap-southeast-2.elb.amazonaws.com/docs/operate/support/index.md
-      - title: UX Architecture
-        href: http://a80d8565-csiamplifysit-csi-480e-369912601.ap-southeast-2.elb.amazonaws.com/docs/solution/06-ux/index.md
+  view:
+    path: "/documentation"
+    component: layout/Inner
+    name: Documentation
+    children:
+    - path: index
+      component: views/documentation
+      meta:
+        title: Documentation
+        icon: documentation
+        affix: true
+      props:
+        topics:
+        - title: Tech Support
+          href: http://a80d8565-csiamplifysit-csi-480e-369912601.ap-southeast-2.elb.amazonaws.com/docs/operate/support/index.md
+        - title: UX Architecture
+          href: http://a80d8565-csiamplifysit-csi-480e-369912601.ap-southeast-2.elb.amazonaws.com/docs/solution/06-ux/index.md

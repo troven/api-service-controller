@@ -9,6 +9,7 @@ import { IChassisMiddleware, IOperation } from "api-service-core";
 
 export class UIsWatcher extends GenericK8sWatcher<IResourceType> {
     uis: any = {};
+    schemas: any = {};
 
     gvk(): IGVK {
         return {
@@ -29,7 +30,8 @@ export class UIsWatcher extends GenericK8sWatcher<IResourceType> {
 
      handleResource(action: string, spec: IResourceType) {
         this.context.log({ "code": "k8s:uis:found", action: action, controller: this.context.config.name, name: spec.metadata.name });
-        this.uis[ spec.metadata.name ] = spec.spec;
+        this.uis[ spec.metadata.name ] = spec.spec.view;
+        _.extend(this.schemas, spec.spec.schemas);
     }
 }
 
@@ -71,6 +73,7 @@ class UIMiddleware implements IChassisMiddleware {
         return (_req: any, res: any) => {
             let ui = _.cloneDeep(this.watcher.uis);
             let ui_config = _.cloneDeep( this.watcher.options.config );
+            ui_config.schemas = _.extend({}, ui_config.schemas, this.watcher.schemas);
 
             if (ui_config.routes) {
                 ui_config.routes = this.resolve( ui , ui_config.routes);

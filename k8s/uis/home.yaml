@@ -6,16 +6,17 @@ metadata:
   labels:
     controller: "api-service-controller"
 spec:
-  path: "/"
-  component: layout/Outer
-  # redirect: "/documentation/index"
-  children:
-  - path: /home
-    component: views/home
-    name: Home
-    meta:
-      title: 'Home'
-      icon: home
-      # affix: true
-  - $ref: documentation-ui
-  - $ref: ibank-ui
+  view:
+    path: "/"
+    component: layout/Outer
+    # redirect: "/documentation/index"
+    children:
+    - path: /home
+      component: views/home
+      name: Home
+      meta:
+        title: 'Home'
+        icon: home
+        # affix: true
+    - $ref: documentation-ui
+    - $ref: ibank-ui
