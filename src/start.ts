@@ -24,6 +24,8 @@ import { default_features  } from "api-service-common";
 import { MongoStore  } from "api-service-mongo";
 import { ControllerPlugin } from "./plugin/ControllerPlugin";
 import { ConfigsPlugin } from "./plugin/ConfigsPlugin";
+import {  MarkdownPlugin, PlantUML, Markdown } from "api-service-pages";
+
 const config = require("config");
 
 // configure a new chassis
@@ -33,6 +35,9 @@ let chassis = new Chassis(config, default_features);
 chassis.registerPlugin( new ControllerPlugin() );
 chassis.registerPlugin( new ConfigsPlugin() );
 chassis.registerPlugin( new MongoStore() );
+chassis.registerPlugin( new MarkdownPlugin() )
+chassis.registerFn( new PlantUML() )
+chassis.registerFn( new Markdown() )
 
 // start the Chassis ...
 chassis.start();
