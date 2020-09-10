@@ -1,5 +1,5 @@
 #FROM node:alpine
-FROM docker.perci-io.net/api-service-common
+FROM docker.perci-io.net/api-service-pages
 
 LABEL name="api-service-controller"
 LABEL title="API Controller"
