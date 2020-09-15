@@ -46,8 +46,9 @@ export class ConfigsPlugin implements IChassisPlugin {
 
         this.options = _.extend({}, _options);
 
-        _.each(this.options, async (option, name) => {
+        _.each(this.options, async (_option, name) => {
             const watcher: GenericK8sWatcher<IResourceType> = WatcherTypes[name];
+            let option = _.extend( { namespace: process.env.K8S_NAMESPACE }, _option);
 
             this.install_crd( context, watcher.getCRD() ).then( () => {
                 context.log( { code: "api:configs:watcher", name: name, options: option, gvk: watcher.gvk() });

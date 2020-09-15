@@ -40,6 +40,8 @@ export class ControllerPlugin implements IChassisPlugin {
     plugin: OpenAPIPlugin;
 
     install(context: IChassisContext, _options: any) {
+        this.kc = new k8s.KubeConfig();
+        this.kc.loadFromDefault();
 
         let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||'' }, _options);
 
@@ -58,8 +60,6 @@ export class ControllerPlugin implements IChassisPlugin {
     }
 
     install_crd(context: IChassisContext, options: any) {
-        this.kc = new k8s.KubeConfig();
-        this.kc.loadFromDefault();
 
         options.crd && this.createCRD(this.kc, CRD).then( (crd) => {
             context.log({ code: "api:k8s:watch:crd", message: crd.body.metadata.name || "missing" });
@@ -83,7 +83,7 @@ export class ControllerPlugin implements IChassisPlugin {
             this.watcher = new OpenAPIsWatcher();
             this.watcher.install(context, this.kc, options);
         } catch (e) {
-            context.error({ code: "api:k8s:watch:failed", options: options });
+            context.error({ code: "api:k8s:watch:failed", options: options, error: e.message });
         }
 
         let openapi: OpenAPI = this.plugin.openapi;
