@@ -12,8 +12,10 @@ spec:
         summary: APIs example
         feature:
           apis:
-            healthz:
-              url: "/healthz"
+            health:
+              url: "http://localhost:5008/healthz"
+            ui:
+              url: "http://localhost:5008/ui"
         responses:
           '200':
             description: "200 response"
