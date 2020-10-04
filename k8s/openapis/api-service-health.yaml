@@ -19,7 +19,7 @@ spec:
           apidocs:
             enable: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json: {}
@@ -32,7 +32,7 @@ spec:
           heartbeat:
             enabled: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json:
@@ -47,7 +47,7 @@ spec:
           heartbeat:
             enabled: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json:

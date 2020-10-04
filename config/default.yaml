@@ -60,7 +60,7 @@ openapi:
           apidocs:
             enable: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json: {}
@@ -71,7 +71,7 @@ openapi:
           datadict:
             enable: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json: {}
@@ -82,7 +82,7 @@ openapi:
           heartbeat:
             enabled: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json:
@@ -99,7 +99,7 @@ openapi:
           heartbeat:
             enabled: true
         responses:
-         '200':
+          '200':
             description: "200 response"
             content:
               application/json:

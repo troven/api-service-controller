@@ -12,11 +12,11 @@ spec:
   - name: catalog
     description: API Catalog
   paths:
-    /models/{organisation}/:
+    /models/{type}/:
       get:
         parameters:
           - in: path
-            name: organisation
+            name: type
             schema:
               type: string
             required: true
@@ -33,7 +33,7 @@ spec:
       post:
         parameters:
           - in: path
-            name: organisation
+            name: type
             schema:
               type: string
             required: true
@@ -52,11 +52,11 @@ spec:
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:create" ]
-    /models/{organisation}/{_id}:
+    /models/{type}/{_id}:
       get:
         parameters:
           - in: path
-            name: organisation
+            name: type
             schema:
               type: string
             required: true
@@ -81,7 +81,7 @@ spec:
       put:
         parameters:
           - in: path
-            name: organisation
+            name: type
             schema:
               type: string
             required: true
@@ -109,7 +109,7 @@ spec:
       delete:
         parameters:
           - in: path
-            name: organisation
+            name: type
             schema:
               type: string
             required: true
