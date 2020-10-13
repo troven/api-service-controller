@@ -26,7 +26,7 @@ spec:
             claims:
               $.realm_access.roles: [ "a6s:dev:models" ]
           mongodb:
-            collection: example
+            collection: type-{{params.type}}
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:list" ]
@@ -44,11 +44,16 @@ spec:
               schema:
                 $ref: "#/components/schemas/model"
         feature:
+          validate:
+            enabled: true
+          dexss:
+            enabled: true
           jwt:
+            debug: true
             claims:
-              $.realm_access.roles: [ "a6s:dev:example" ]
+              $.realm_access.roles: [ "a6s:dev:models" ]
           mongodb:
-            collection: example
+            collection: type-{{params.type}}
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:create" ]
@@ -72,7 +77,7 @@ spec:
             claims:
               $.realm_access.roles: [ "a6s:dev:models" ]
           mongodb:
-            collection: example
+            collection: type-{{params.type}}
             enabled: true
             # filterBy: [_id]
             # filterBy: _id
@@ -100,9 +105,9 @@ spec:
         feature:
           jwt:
             claims:
-              $.realm_access.roles: [ "a6s:dev:example" ]
+              $.realm_access.roles: [ "a6s:dev:models" ]
           mongodb:
-            collection: example
+            collection: type-{{params.type}}
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:update" ]
@@ -123,9 +128,9 @@ spec:
         feature:
           jwt:
             claims:
-              $.realm_access.roles: [ "a6s:dev:example" ]
+              $.realm_access.roles: [ "a6s:dev:models" ]
           mongodb:
-            collection: example
+            collection: type-{{params.type}}
             enabled: true
         x-security:
         - oauth2_jwt: [ "models:delete" ]

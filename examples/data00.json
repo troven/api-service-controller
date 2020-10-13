@@ -1,0 +1,7 @@
+{
+    "name": "Data 00",
+    "script": "<script>test</script>",
+    "javascript": "<img src='javascript:alert(1)'>",
+    "onclick": "<a href='onclick=alert(1)'>",
+    "example": true
+}
