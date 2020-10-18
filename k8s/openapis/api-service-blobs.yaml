@@ -1,0 +1,149 @@
+---
+apiVersion: k8s.a6s.dev/v1
+kind: OpenAPI
+metadata:
+  name: api-service-blobs
+  labels:
+    controller: "api-service-controller"
+spec:
+  paths:
+    /blobs/{type}/:
+      get:
+        parameters:
+          - in: path
+            name: type
+            schema:
+              type: string
+            required: true
+            description: type of blobs
+        feature:
+          # jwt:
+          #   claims:
+          #     $.realm_access.roles: [ "a6s:dev:blobs" ]
+          blobs:
+            path: "{{path.type}}"
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "blobs:list" ]
+      post:
+        parameters:
+          - in: path
+            name: type
+            schema:
+              type: string
+            required: true
+            description: type of blobs
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/blob"
+        feature:
+          # jwt:
+          #   debug: true
+          #   claims:
+          #     $.realm_access.roles: [ "a6s:dev:blobs" ]
+          blobs:
+            path: "{{path.type}}"
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "blobs:create" ]
+    /blobs/{type}/{_id}:
+      get:
+        parameters:
+          - in: path
+            name: type
+            schema:
+              type: string
+            required: true
+            description: type of blobs
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify blob
+        feature:
+          # jwt:
+          #   claims:
+          #     $.realm_access.roles: [ "a6s:dev:blobs" ]
+          blobs:
+            path: "{{path.type}}"
+            enabled: true
+            # filterBy: [_id]
+            # filterBy: _id
+        x-security:
+        - oauth2_jwt: [ "blobs:read" ]
+      put:
+        parameters:
+          - in: path
+            name: type
+            schema:
+              type: string
+            required: true
+            description: type of blobs
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify blob
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/blob"
+        feature:
+          # jwt:
+          #   claims:
+          #     $.realm_access.roles: [ "a6s:dev:blobs" ]
+          blobs:
+            path: "{{path.type}}"
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "blobs:update" ]
+      delete:
+        parameters:
+          - in: path
+            name: type
+            schema:
+              type: string
+            required: true
+            description: type of blobs
+          - in: path
+            name: _id
+            schema:
+              type: string
+            required: true
+            description: ID used to identify blob
+        feature:
+          # jwt:
+          #   claims:
+          #     $.realm_access.roles: [ "a6s:dev:blobs" ]
+          blobs:
+            path: "{{path.type}}"
+            enabled: true
+        x-security:
+        - oauth2_jwt: [ "blobs:delete" ]
+
+  components:
+    schemas:
+      blob:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
+            type: string
+      recursive:
+        type: object
+        additionalProperties: false
+        required: [ "title" ]
+        properties:
+          title:
+            type: string
+          recursives:
+            type: array
+            schema:
+              $ref: "#/components/schemas/recursive"
+
