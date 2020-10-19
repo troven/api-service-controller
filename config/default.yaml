@@ -112,6 +112,7 @@ openapi:
   components:
     schemas:
       healthz:
+        title: Health Check Response
         type: object
         properties:
           ok:
