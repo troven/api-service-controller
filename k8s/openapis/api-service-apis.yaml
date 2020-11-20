@@ -2,25 +2,38 @@
 apiVersion: k8s.a6s.dev/v1
 kind: OpenAPI
 metadata:
-  name: api-service-apis
-  labels:
-    controller: "api-service-controller"
+    name: api-service-apis
+    labels:
+        controller: "api-service-controller"
 spec:
-  paths:
-    /apis/example:
-      get:
-        summary: APIs example
-        feature:
-          apis:
-            health:
-              url: "http://localhost:5008/healthz"
-            ui:
-              url: "http://localhost:5008/ui"
-        responses:
-          '200':
-            description: "200 response"
-            content:
-              application/json: {}
+    paths:
+        /apis/example:
+            get:
+                summary: APIs example
+                feature:
+                    apis:
+                        health:
+                            url: "http://localhost:5008/healthz"
+                        ui:
+                            url: "http://localhost:5008/ui"
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json: {}
+        /apis/dexss/:
+            post:
+                summary: de-xss
+                feature:
+                    dexss:
+                        enabled: true
+                    echo:
+                        enabled: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json: {}
 
-  components:
-    schemas:
+    components:
+        schemas:

@@ -2,6 +2,9 @@
     "name": "Data 00",
     "script": "<script>test</script>",
     "javascript": "<img src='javascript:alert(1)'>",
-    "onclick": "<a href='onclick=alert(1)'>",
-    "example": true
+    "onclick": "<a href='javascript:alert(2)' onclick=alert(1)>",
+    "html": "<html>html test</html>",
+    "string": "string test",
+    "number": 42,
+    "bool": true
 }

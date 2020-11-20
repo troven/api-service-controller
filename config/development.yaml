@@ -2,87 +2,90 @@ name: api-service-controller
 port: 5008
 
 auditor:
-  enabled: true
+    enabled: true
 
 logging:
-  enabled: true
-  Console:
     enabled: true
+    Console:
+        enabled: true
 
 features:
-  payload:
-    enabled: true
+    harden:
+        enabled: true
 
-  prometheus:
-    enabled: true
+    payload:
+        enabled: true
 
-  jwt:
-    secret: false
-    claims:
-      jti: "1234"
+    prometheus:
+        enabled: true
 
-  pipeline:
-    enabled: true
+    jwt:
+        secret: false
+        claims:
+            jti: "1234"
 
-  mongodb:
-    enabled: true
-    host: localhost
-    port: 27017
-    database: example
-    ssl: false
+    pipeline:
+        enabled: true
 
-  openapi:
-    enabled: true
-    info:
-      title: "Example Data API: mongodb"
-      version: 0.2.0
-    x-security:
-      - oauth2_jwt: [ "api:protected" ]
-    components:
-      securitySchemes:
-        api_key:
-          type: apiKey
-          description: API key to authorize requests.
-          name: api_key
-          in: header
-        oauth2_jwt:
-          type: http
-          scheme: bearer
-          description: JWT bearer key to authorize requests.
-          bearerFormat: JWT
-          name: authorization
-          in: header
-        openId:
-          type: openIdConnect
-          openIdConnectUrl: /.well-known/openid-configuration
-        oAuth:
-          type: oauth2
-          description: uses the OAuth2 clientCredentials flow to authorize requests.
-          flows:
-            x-authorizationCode:
-              authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
-              scopes:
-                "api:healthz": "API health check"
-                "api:swagger": "Open API specification"
-            x-password:
-              authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
-              scopes:
-                "api:healthz": "API health check"
-                "api:swagger": "Open API specification"
-            clientCredentials:
-              authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
-              scopes:
-                "api:healthz": "API health check"
-                "api:swagger": "Open API specification"
-            x-implicit:
-              authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
-              scopes:
-                "api:healthz": "API health check"
-                "api:swagger": "Open API specification"
+    mongodb:
+        enabled: true
+        host: localhost
+        port: 27017
+        database: example
+        ssl: false
 
-  controller:
-    enabled: true
-    crd: false
-    labels:
-      controller: "api-service-controller"  
-    folder: "./k8s/openapis"
+    openapi:
+        enabled: true
+        info:
+            title: "Example Data API: mongodb"
+            version: 0.2.0
+        x-security:
+            - oauth2_jwt: ["api:protected"]
+        components:
+            securitySchemes:
+                api_key:
+                    type: apiKey
+                    description: API key to authorize requests.
+                    name: api_key
+                    in: header
+                oauth2_jwt:
+                    type: http
+                    scheme: bearer
+                    description: JWT bearer key to authorize requests.
+                    bearerFormat: JWT
+                    name: authorization
+                    in: header
+                openId:
+                    type: openIdConnect
+                    openIdConnectUrl: /.well-known/openid-configuration
+                oAuth:
+                    type: oauth2
+                    description: uses the OAuth2 clientCredentials flow to authorize requests.
+                    flows:
+                        x-authorizationCode:
+                            authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
+                            scopes:
+                                "api:healthz": "API health check"
+                                "api:swagger": "Open API specification"
+                        x-password:
+                            authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
+                            scopes:
+                                "api:healthz": "API health check"
+                                "api:swagger": "Open API specification"
+                        clientCredentials:
+                            authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
+                            scopes:
+                                "api:healthz": "API health check"
+                                "api:swagger": "Open API specification"
+                        x-implicit:
+                            authorizationUrl: https://login.k8s-net-au.com/oauth2/authorize
+                            scopes:
+                                "api:healthz": "API health check"
+                                "api:swagger": "Open API specification"
+
+    controller:
+        enabled: true
+        crd: false
+        labels:
+            controller: "api-service-controller"
+        folder: "./k8s/openapis"

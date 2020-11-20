@@ -5,6 +5,10 @@ LABEL name="api-service-controller"
 LABEL title="API Controller"
 LABEL author="cto@troven.co"
 
+# RUN apk update && apk upgrade && \
+#   apk add --no-cache bash git openssh
+
+
 WORKDIR /opt/a6s/
 
 # Prepare NPM

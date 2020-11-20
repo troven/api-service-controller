@@ -2,124 +2,131 @@ name: api-service-controller
 port: 5008
 
 auditor:
-  enabled: true
-  File:
-    filename: api-controller.audit.log
+    enabled: true
+    File:
+        filename: api-controller.audit.log
 
 logging:
-  enabled: true
-  Console:
     enabled: true
+    Console:
+        enabled: true
 
 features:
-  logging:
+    harden:
+        enabled: true
 
-  payload:
-    enabled: true
+    payload:
+        enabled: true
 
-  cors:
-    enabled: true
+    cors:
+        enabled: true
 
-  prometheus:
-    enabled: true
+    prometheus:
+        enabled: true
 
-  jwt:
-    secret: false
+    jwt:
+        secret: false
 
-  pipeline:
-    before:
-    after:
+    pipeline:
+        before:
+        after:
 
-  openapi:
-    enabled: true
-    before:
-    after:
+    openapi:
+        enabled: true
+        before:
+        after:
 
-  controller:
-    enabled: true
-    crd: false
-    folder: "./k8s/openapis"
+    controller:
+        enabled: true
+        crd: false
+        folder: "./k8s/openapis"
 
-  mongodb:
-    host: localhost
-    port: 27017
-    database: example
-    ssl: false
+    mongodb:
+        host: localhost
+        port: 27017
+        database: example
+        ssl: false
 
 openapi:
-  servers:
-    - url: https://api.example.a6s.dev/
-  info:
-    title: Controller OpenAPI
+    servers:
+        - url: https://api.example.a6s.dev/
+    info:
+        title: Controller OpenAPI
 
-  paths:
-    /:
-      get:
-        summary: Open API docs
-        feature:
-          apidocs:
-            enable: true
-        responses:
-          '200':
-            description: "200 response"
-            content:
-              application/json: {}
-    /datadict:
-      get:
-        summary: Open API docs
-        feature:
-          datadict:
-            enable: true
-        responses:
-          '200':
-            description: "200 response"
-            content:
-              application/json: {}
-    /healthz:
-      get:
-        summary: Health check
-        feature:
-          heartbeat:
-            enabled: true
-        responses:
-          '200':
-            description: "200 response"
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/healthz"
+    paths:
+        /:
+            get:
+                summary: Open API docs
+                feature:
+                    apidocs:
+                        enable: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json: {}
+        /dexss:
+            post:
+                summary: de-xss
+                feature:
+                    dexss:
+                        enabled: true
 
-    /health:
-      get:
-        summary: Health check
-        feature:
-          jwt:
-            claims:
-              -$.resource_access.account.roles = [ "api:health" ]
-          heartbeat:
-            enabled: true
-        responses:
-          '200':
-            description: "200 response"
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
+        /datadict:
+            get:
+                summary: Open API docs
+                feature:
+                    datadict:
+                        enable: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json: {}
+        /healthz:
+            get:
+                summary: Health check
+                feature:
+                    heartbeat:
+                        enabled: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/healthz"
+
+        /health:
+            get:
+                summary: Health check
+                feature:
+                    jwt:
+                        claims: -$.resource_access.account.roles = [ "api:health" ]
+                    heartbeat:
+                        enabled: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    properties:
+                                        ok:
+                                            type: string
+
+    components:
+        schemas:
+            healthz:
+                title: Health Check Response
+                type: object
+                properties:
                     ok:
-                      type: string
-
-  components:
-    schemas:
-      healthz:
-        title: Health Check Response
-        type: object
-        properties:
-          ok:
-            type: string
-    securitySchemes:
-      oauth2_jwt:
-        type: http
-        scheme: bearer
-        description: JWT bearer key to authorize requests.
-        bearerFormat: JWT
+                        type: string
+        securitySchemes:
+            oauth2_jwt:
+                type: http
+                scheme: bearer
+                description: JWT bearer key to authorize requests.
+                bearerFormat: JWT
