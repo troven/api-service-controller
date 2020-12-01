@@ -96,13 +96,9 @@ openapi:
                             application/json:
                                 schema:
                                     $ref: "#/components/schemas/healthz"
-
-        /health:
-            get:
+            post:
                 summary: Health check
                 feature:
-                    jwt:
-                        claims: -$.resource_access.account.roles = [ "api:health" ]
                     heartbeat:
                         enabled: true
                 responses:
@@ -111,10 +107,47 @@ openapi:
                         content:
                             application/json:
                                 schema:
-                                    type: object
-                                    properties:
-                                        ok:
-                                            type: string
+                                    $ref: "#/components/schemas/healthz"
+
+        /debug:
+            get:
+                summary: Echo
+                feature:
+                    debug:
+                        enabled: true
+                        echo: true
+                responses:
+                    "200":
+                        description: "200 response"
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/healthz"
+        /prepend/*:
+            get:
+                feature:
+                    proxy:
+                        target: "http://localhost:5008/"
+                        ignorePath: false
+                        prependPath: true
+        /noprepend/*:
+            get:
+                feature:
+                    proxy:
+                        target: "http://localhost:5008/"
+                        ignorePath: false
+                        prependPath: false
+                        logLevel: warn
+        /toproxy/debug:
+            get:
+                feature:
+                    proxy:
+                        target: "http://localhost:5008/"
+                        ignorePath: false
+                        prependPath: false
+                        toProxy: true
+                        logLevel: debug
+
 
     components:
         schemas:

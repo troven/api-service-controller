@@ -7,28 +7,35 @@ metadata:
         controller: "api-service-controller"
 spec:
     paths:
-        /proxy/{type}/:
-            get:
-                parameters:
-                    - in: path
-                      name: type
-                      schema:
-                          type: string
-                      required: true
-                      description: type of proxy
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/models/{{path.type}}/"
-                        enabled: true
-            post:
-                parameters:
-                    - in: path
-                      name: type
-                      schema:
-                          type: string
-                      required: true
-                      description: type of proxy
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/models/{{path.type}}/"
-                        enabled: true
+        # /proxy/healthz:
+        #     get:
+        #         feature:
+        #             proxy:
+        #                 target: "http://localhost:5008/healthz"
+        #                 ignorePath: false
+        #                 prependPath: false
+        # /proxy/models/{type}/:
+        #     get:
+        #         parameters:
+        #             - in: path
+        #               name: type
+        #               schema:
+        #                   type: string
+        #               required: true
+        #               description: type of proxy
+        #         feature:
+        #             proxy:
+        #                 target: "http://localhost:5008/models/{{path.type}}/"
+        #                 enabled: true
+        #     post:
+        #         parameters:
+        #             - in: path
+        #               name: type
+        #               schema:
+        #                   type: string
+        #               required: true
+        #               description: type of proxy
+        #         feature:
+        #             proxy:
+        #                 target: "http://localhost:5008/models/{{path.type}}/"
+        #                 enabled: true
