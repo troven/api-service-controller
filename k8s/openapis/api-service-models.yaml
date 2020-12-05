@@ -12,6 +12,35 @@ spec:
         - name: catalog
           description: API Catalog
     paths:
+        /bulk_models/{type}/:
+            post:
+                parameters:
+                - in: path
+                  name: type
+                  schema:
+                      type: string
+                  required: true
+                  description: type of models
+                requestBody:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/model"
+                feature:
+                    validate:
+                        enabled: true
+                    dexss:
+                        enabled: true
+                    # jwt:
+                    #     debug: true
+                    #     claims:
+                    #         $.realm_access.roles: ["a6s:dev:models"]
+                    mongodb:
+                        actionId: "bulk"
+                        collection: type-{{params.type}}
+                        enabled: true
+                x-security:
+                    - oauth2_jwt: ["models:create"]
         /models/{type}/:
             get:
                 parameters:
@@ -73,9 +102,9 @@ spec:
                       required: true
                       description: ID used to identify model
                 feature:
-                    jwt:
-                        claims:
-                            $.realm_access.roles: ["a6s:dev:models"]
+                    # jwt:
+                    #     claims:
+                    #         $.realm_access.roles: ["a6s:dev:models"]
                     mongodb:
                         collection: type-{{params.type}}
                         enabled: true
@@ -103,9 +132,9 @@ spec:
                             schema:
                                 $ref: "#/components/schemas/model"
                 feature:
-                    jwt:
-                        claims:
-                            $.realm_access.roles: ["a6s:dev:models"]
+                    # jwt:
+                    #     claims:
+                    #         $.realm_access.roles: ["a6s:dev:models"]
                     mongodb:
                         collection: type-{{params.type}}
                         enabled: true
@@ -126,9 +155,9 @@ spec:
                       required: true
                       description: ID used to identify model
                 feature:
-                    jwt:
-                        claims:
-                            $.realm_access.roles: ["a6s:dev:models"]
+                    # jwt:
+                    #     claims:
+                    #         $.realm_access.roles: ["a6s:dev:models"]
                     mongodb:
                         collection: type-{{params.type}}
                         enabled: true

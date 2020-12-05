@@ -138,6 +138,13 @@ openapi:
                         ignorePath: false
                         prependPath: false
                         logLevel: warn
+            post:
+                feature:
+                    proxy:
+                        target: "http://localhost:5008/debug"
+                        ignorePath: true
+                        prependPath: true
+                        logLevel: debug
         /toproxy/debug:
             get:
                 feature:
@@ -146,7 +153,6 @@ openapi:
                         ignorePath: false
                         prependPath: false
                         toProxy: true
-                        logLevel: debug
 
 
     components:

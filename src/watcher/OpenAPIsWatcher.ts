@@ -44,7 +44,7 @@ export class OpenAPIsWatcher extends GenericK8sWatcher<IControllerOpenAPI> {
         for(let p in api_spec.paths) {
             let methods = api_spec.paths[p];
             for(let m in methods) {
-                let operation = _.extend( { resource: p, actionId: m}, methods[m]) as IControllerOperation;
+                let operation = _.extend( { resource: p, actionId: m, method: m}, methods[m]) as IControllerOperation;
                 this.context.log({ "code": "k8s:endpoint", action: action, operation: operation });
                 this.context.bus.emit("k8s:"+action, operation);
             }

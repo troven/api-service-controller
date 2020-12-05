@@ -1,0 +1,23 @@
+[
+    {
+    "name": "Data 00",
+    "script": "<script>test</script>",
+    "javascript": "<img src='javascript:alert(1)'>",
+    "onclick": "<a href='javascript:alert(2)' onclick=alert(3)>",
+    "html": "<html>html test</html>",
+    "string": "string test",
+    "number": 42,
+    "bool": true
+},
+{
+    "name": "Data 01",
+    "script": "<script>test</script>",
+    "javascript": "<img src='javascript:alert(11)'>",
+    "onclick": "<a href='javascript:alert(22)' onclick=alert(333)>",
+    "html": "<html>html test 2</html>",
+    "string": "string test 2",
+    "number": 72,
+    "bool": false
+}
+
+]
