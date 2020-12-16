@@ -11,4 +11,5 @@ secrets
 tmp
 *.log
 lib
+bin/get-jwt.sh
 

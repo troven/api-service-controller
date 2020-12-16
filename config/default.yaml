@@ -2,170 +2,192 @@ name: api-service-controller
 port: 5008
 
 auditor:
-    enabled: true
-    File:
-        filename: api-controller.audit.log
+  enabled: true
+  File:
+    filename: api-controller.audit.log
 
 logging:
+  enabled: true
+  Console:
     enabled: true
-    Console:
-        enabled: true
 
 features:
-    harden:
-        enabled: true
+  harden:
+    enabled: true
 
-    payload:
-        enabled: true
+  payload:
+    enabled: true
 
-    cors:
-        enabled: true
+  cors:
+    enabled: true
 
-    prometheus:
-        enabled: true
+  prometheus:
+    enabled: true
 
-    jwt:
-        secret: false
+  jwt:
+    secret: false
 
-    pipeline:
-        before:
-        after:
+  pipeline:
+    before:
+    after:
 
-    openapi:
-        enabled: true
-        before:
-        after:
+  openapi:
+    enabled: true
+    before:
+    after:
 
-    controller:
-        enabled: true
-        crd: false
-        folder: "./k8s/openapis"
+  controller:
+    enabled: true
+    crd: false
+    folder: "./k8s/openapis"
 
-    mongodb:
-        host: localhost
-        port: 27017
-        database: example
-        ssl: false
+  mongodb:
+    host: localhost
+    port: 27017
+    database: example
+    ssl: false
 
 openapi:
-    servers:
-        - url: https://api.example.a6s.dev/
-    info:
-        title: Controller OpenAPI
+  servers:
+    - url: https://api.example.a6s.dev/
+  info:
+    title: Controller OpenAPI
 
-    paths:
-        /:
-            get:
-                summary: Open API docs
-                feature:
-                    apidocs:
-                        enable: true
-                responses:
-                    "200":
-                        description: "200 response"
-                        content:
-                            application/json: {}
-        /dexss:
-            post:
-                summary: de-xss
-                feature:
-                    dexss:
-                        enabled: true
+  paths:
+    /:
+      get:
+        summary: Open API docs
+        feature:
+          apidocs:
+            enable: true
+        responses:
+          "200":
+            description: "200 response"
+            content:
+              application/json: {}
+    /dexss:
+      post:
+        summary: de-xss
+        feature:
+          dexss:
+            enabled: true
 
-        /datadict:
-            get:
-                summary: Open API docs
-                feature:
-                    datadict:
-                        enable: true
-                responses:
-                    "200":
-                        description: "200 response"
-                        content:
-                            application/json: {}
-        /healthz:
-            get:
-                summary: Health check
-                feature:
-                    heartbeat:
-                        enabled: true
-                responses:
-                    "200":
-                        description: "200 response"
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/healthz"
-            post:
-                summary: Health check
-                feature:
-                    heartbeat:
-                        enabled: true
-                responses:
-                    "200":
-                        description: "200 response"
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/healthz"
+    /datadict:
+      get:
+        summary: Open API docs
+        feature:
+          datadict:
+            enable: true
+        responses:
+          "200":
+            description: "200 response"
+            content:
+              application/json: {}
+    /healthz:
+      get:
+        summary: Health check
+        feature:
+          heartbeat:
+            enabled: true
+        responses:
+          "200":
+            description: "200 response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/healthz"
+      post:
+        summary: Health check
+        feature:
+          heartbeat:
+            enabled: true
+        responses:
+          "200":
+            description: "200 response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/healthz"
 
-        /debug:
-            get:
-                summary: Echo
-                feature:
-                    debug:
-                        enabled: true
-                        echo: true
-                responses:
-                    "200":
-                        description: "200 response"
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/healthz"
-        /prepend/*:
-            get:
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/"
-                        ignorePath: false
-                        prependPath: true
-        /noprepend/*:
-            get:
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/"
-                        ignorePath: false
-                        prependPath: false
-                        logLevel: warn
-            post:
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/debug"
-                        ignorePath: true
-                        prependPath: true
-                        logLevel: debug
-        /toproxy/debug:
-            get:
-                feature:
-                    proxy:
-                        target: "http://localhost:5008/"
-                        ignorePath: false
-                        prependPath: false
-                        toProxy: true
+    /debug:
+      get:
+        summary: Echo
+        feature:
+          debug:
+            enabled: true
+            echo: true
+        responses:
+          "200":
+            description: "200 response"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/healthz"
+    /prepend/*:
+      get:
+        feature:
+          proxy:
+            target: "http://localhost:5008/"
+            ignorePath: false
+            prependPath: true
+    /noprepend/*:
+      get:
+        feature:
+          proxy:
+            target: "http://localhost:5008/"
+            ignorePath: false
+            prependPath: false
+            logLevel: warn
+      post:
+        feature:
+          proxy:
+            target: "http://localhost:5008/debug"
+            ignorePath: true
+            prependPath: true
+            logLevel: debug
+    /toproxy/debug:
+      get:
+        feature:
+          proxy:
+            target: "http://localhost:5008/"
+            ignorePath: false
+            prependPath: false
+            toProxy: true
+    /api/{model}/:
+      get:
+        parameters:
+        - in: path
+          name: model
+          schema:
+            type: string
+          required: true
+          description: type of models
+        feature:
+          api:
+            url: "https://api.sit.amplifyonline.csi.edu.au/v1/ie/{{path.model}}/"
+      post:
+        parameters:
+        - in: path
+          name: model
+          schema:
+            type: string
+          required: true
+          description: type of models
+        feature:
+          api:
+            url: "https://jsonplaceholder.typicode.com/{{path.model}}/"
 
-
-    components:
-        schemas:
-            healthz:
-                title: Health Check Response
-                type: object
-                properties:
-                    ok:
-                        type: string
-        securitySchemes:
-            oauth2_jwt:
-                type: http
-                scheme: bearer
-                description: JWT bearer key to authorize requests.
-                bearerFormat: JWT
+  components:
+    schemas:
+      healthz:
+        title: Health Check Response
+        type: object
+        properties:
+          ok:
+            type: string
+    securitySchemes:
+      oauth2_jwt:
+        type: http
+        scheme: bearer
+        description: JWT bearer key to authorize requests.
+        bearerFormat: JWT
