@@ -1,6 +1,6 @@
 {
   "name": "api-service-controller",
-  "version": "0.16.10",
+  "version": "0.16.11",
   "description": "OpenAPI middleware for K8s",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
