@@ -43,7 +43,7 @@ export class ControllerPlugin implements IChassisPlugin {
         this.kc = new k8s.KubeConfig();
         this.kc.loadFromDefault();
 
-        let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE||'' }, _options);
+        let options: any = _.extend( { crd: true, enabled: true, folder: false, watcher: {}, namespace: process.env.K8S_NAMESPACE || false }, _options);
 
         if (_options.namespace) {
             this.install_crd(context, _options);
