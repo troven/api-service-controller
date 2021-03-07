@@ -1,15 +1,12 @@
-#FROM node:alpine
-FROM docker.perci-io.net/api-service-pages:latest
+FROM node:alpine
 
 LABEL name="api-service-controller"
 LABEL title="API Controller"
 LABEL author="cto@troven.co"
 
-# RUN apk update && apk upgrade && \
-#   apk add --no-cache bash git openssh
+RUN apk add nodejs yarn npm curl bash
 
-
-WORKDIR /opt/a6s/
+WORKDIR /opt/troven/
 
 # Prepare NPM
 
